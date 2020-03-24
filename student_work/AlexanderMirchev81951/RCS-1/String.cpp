@@ -7,7 +7,7 @@
 
     // private
 String::String(const char* const str, const size_t& size, const size_t& capacity):
- _capacity{capacity}, _size{size}, data{new char[capacity]} {
+ _capacity{capacity}, _size{size}, data{new char[capacity + 1]} {
     assert(size <= capacity);
 
     strcpy(data, str);
@@ -41,7 +41,7 @@ char& String::back() const {
     return *(data + _size - 1);
 }
 char* String::c_str() const {
-    char* newString = new char[_size];
+    char* newString = new char[_size + 1];
     strcpy(newString, data);
     return newString;
 }
@@ -71,7 +71,7 @@ void String::resize(const size_t& newCapacity) {
     }
 
     _capacity = newCapacity;
-    char* newContainer = new char[_capacity];
+    char* newContainer = new char[_capacity + 1];
     strcpy(newContainer, data);
     delete[] data;
     data = newContainer;
@@ -90,7 +90,7 @@ void String::resize(const size_t& newCapacity, const char filler) {
 String& String::operator =(const String& str) {
     if(this != &str) {
         delete[] data;
-        data = new char[str.capacity()];
+        data = new char[str.capacity() + 1];
         strcpy(data, str.data);
         _size = str._size;
         _capacity = str._capacity;
