@@ -20,23 +20,23 @@ public:
 
     // Operators
 
-    void operator=(const String&);
+    String& operator=(const String&);
     String operator+(const String&) const;
     String& operator+=(const String&);
-    const char operator[](const int) const;
-    char& operator[](const int);
+    const char operator[](const size_t&) const;
+    char& operator[](const size_t&);
 
     friend std::ostream& operator <<(std::ostream&, const String&);
     friend std::istream& operator >>(std::istream&, String&);
 
-    operator bool() const;
+    explicit operator bool() const;
     // Methods
 
     size_t size() const;
     size_t capacity() const;
-    char at(const int) const;
-    char front() const;
-    char back() const;
+    char& at(const int) const;
+    char& front() const;
+    char& back() const;
     char* c_str() const;
     bool empty() const;
 
@@ -44,12 +44,12 @@ public:
     void append(const String&);
 
     void shrink_to_fit();
-    void resize(const size_t);
-    void resize(const size_t, const char);
+    void resize(const size_t&);
+    void resize(const size_t&, const char);
 
 private:
     // Private constructor
-    String(const char* const, const size_t, const size_t);
+    String(const char* const, const size_t&, const size_t&);
 
     // Private functions
     

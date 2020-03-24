@@ -6,7 +6,7 @@
 // Constructors
 
     // private
-String::String(const char* const str, const size_t size, const size_t capacity):
+String::String(const char* const str, const size_t& size, const size_t& capacity):
  _capacity{capacity}, _size{size}, data{new char[capacity]} {
     assert(size <= capacity);
 
@@ -28,25 +28,25 @@ size_t String::size() const {
 size_t String::capacity() const {
     return _capacity;
 }
-char String::at(const int pos) const {
+char& String::at(const int pos) const {
     assert(!empty() && pos >= 0 && pos < _size);
-    return data[pos];
+    return *(data + pos);
 }
-char String::front() const {
+char& String::front() const {
     assert(!empty());
-    return data[0];
+    return *(data);
 }
-char String::back() const {
+char& String::back() const {
     assert(!empty());
-    return data[_size - 1];
+    return *(data + _size - 1);
 }
 char* String::c_str() const {
-    char* newString = new char[_capacity];
+    char* newString = new char[_size];
     strcpy(newString, data);
     return newString;
 }
 bool String::empty() const {
-    return !(_size > 0);
+    return _size == 0;
 }
 
 void String::push(const char character) {
@@ -65,15 +65,18 @@ void String::append(const String& str) {
 void String::shrink_to_fit() {
     resize(_size);
 }
-void String::resize(const size_t newCapacity) {
+void String::resize(const size_t& newCapacity) {
+    if(newCapacity < _size) {
+        return;
+    }
+
     _capacity = newCapacity;
     char* newContainer = new char[_capacity];
-
     strcpy(newContainer, data);
     delete[] data;
     data = newContainer;
 }
-void String::resize(const size_t newCapacity, const char filler) {
+void String::resize(const size_t& newCapacity, const char filler) {
     resize(newCapacity);
     int difference = newCapacity - _size;
     for (size_t i = 0; i < difference; i++)
@@ -84,12 +87,15 @@ void String::resize(const size_t newCapacity, const char filler) {
 
 // Operators
 
-    void String::operator =(const String& str) {
-    delete[] data;
-    data = new char[str.capacity()];
-    strcpy(data, str.c_str());
-    _size = str.size();
-    _capacity = str.capacity();
+String& String::operator =(const String& str) {
+    if(this != &str) {
+        delete[] data;
+        data = new char[str.capacity()];
+        strcpy(data, str.data);
+        _size = str._size;
+        _capacity = str._capacity;
+    }
+    return (*this);    
 } 
 String String::operator +(const String& toAppend) const {
     String str(*this);
@@ -100,12 +106,11 @@ String& String::operator +=(const String& toAppend) {
     append(toAppend);
     return (*this);
 }
-const char String::operator[](const int pos) const {
+const char String::operator[](const size_t& pos) const {
     return at(pos);
 }
-char& String::operator[](const int pos) {
-    char* res = data + pos;
-    return *res;
+char& String::operator[](const size_t& pos) {
+    return at(pos);
 }
 
 std::ostream& operator <<(std::ostream& out, const String& str) {
