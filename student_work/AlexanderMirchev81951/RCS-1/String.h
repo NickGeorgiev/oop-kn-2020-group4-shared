@@ -52,7 +52,7 @@ private:
     String(const char* const, const size_t&, const size_t&);
 
     // Private functions
-    
+    void appendCharacter(const char);
 };
 
 #endif

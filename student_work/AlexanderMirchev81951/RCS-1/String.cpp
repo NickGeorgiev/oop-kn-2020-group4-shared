@@ -50,17 +50,14 @@ bool String::empty() const {
 }
 
 void String::push(const char character) {
-    if(_size + 1 >= _capacity) {
-        resize(_capacity*2);
-    }
-    data[_size] = character;
-    data[_size + 1] = '\0';
-    ++_size;
+    appendCharacter(character);
+    data[_size] = '\0';
 } 
 void String::append(const String& str) {
     for(size_t i = 0; i < str._size; i++) {
-        push(str[i]);
+        appendCharacter(str[i]);
     }
+    data[_size] = '\0';
 }
 
 void String::shrink_to_fit() {
@@ -82,8 +79,9 @@ void String::resize(const size_t& newCapacity, const char filler) {
     int difference = newCapacity - _size - 1;
     for (size_t i = 0; i < difference; i++)
     {
-        push(filler);
+        appendCharacter(filler);
     }
+    data[_size] = '\0';
 }
 
 // Operators
@@ -126,4 +124,14 @@ std::istream& operator >>(std::istream& in, String& str) {
 
 String::operator bool() const {
     return !empty();
+}
+
+// Private methods
+
+void String::appendCharacter(const char character) {
+    if(_size + 1 >= _capacity) {
+        resize(_capacity*2);
+    }
+    data[_size] = character;
+    ++_size;
 }
