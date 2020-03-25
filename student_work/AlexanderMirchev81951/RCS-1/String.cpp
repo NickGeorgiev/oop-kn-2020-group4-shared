@@ -7,14 +7,14 @@
 
     // private
 String::String(const char* const str, const size_t& size, const size_t& capacity):
- _capacity{capacity}, _size{size}, data{new char[capacity + 1]} {
-    assert(size <= capacity);
+ _capacity{capacity}, _size{size}, data{new char[capacity]} {
+    assert(size < capacity);
 
     strcpy(data, str);
 }
     // public
 String::String(): String("", 0, 4) {}
-String::String(const char* const str): String(str, strlen(str), strlen(str)) {}
+String::String(const char* const str): String(str, strlen(str), strlen(str) + 1) {}
 String::String(const String& str): String(str.data, str._size, str._capacity) {}
 String::~String() {
     delete[] data;
@@ -50,10 +50,11 @@ bool String::empty() const {
 }
 
 void String::push(const char character) {
-    if(_size + 1 > _capacity) {
+    if(_size + 1 >= _capacity) {
         resize(_capacity*2);
     }
     data[_size] = character;
+    data[_size + 1] = '\0';
     ++_size;
 } 
 void String::append(const String& str) {
@@ -63,22 +64,22 @@ void String::append(const String& str) {
 }
 
 void String::shrink_to_fit() {
-    resize(_size);
+    resize(_size + 1);
 }
 void String::resize(const size_t& newCapacity) {
-    if(newCapacity < _size) {
+    if(newCapacity < _size + 1) {
         return;
     }
 
     _capacity = newCapacity;
-    char* newContainer = new char[_capacity + 1];
+    char* newContainer = new char[_capacity];
     strcpy(newContainer, data);
     delete[] data;
     data = newContainer;
 }
 void String::resize(const size_t& newCapacity, const char filler) {
     resize(newCapacity);
-    int difference = newCapacity - _size;
+    int difference = newCapacity - _size - 1;
     for (size_t i = 0; i < difference; i++)
     {
         push(filler);
@@ -90,7 +91,7 @@ void String::resize(const size_t& newCapacity, const char filler) {
 String& String::operator =(const String& str) {
     if(this != &str) {
         delete[] data;
-        data = new char[str.capacity() + 1];
+        data = new char[str._capacity];
         strcpy(data, str.data);
         _size = str._size;
         _capacity = str._capacity;
@@ -120,7 +121,7 @@ std::ostream& operator <<(std::ostream& out, const String& str) {
 std::istream& operator >>(std::istream& in, String& str) {
     in >> str.data;
     str._size = strlen(str.data);
-    str._capacity = str._size;
+    str._capacity = str._size + 1;
 }
 
 String::operator bool() const {
