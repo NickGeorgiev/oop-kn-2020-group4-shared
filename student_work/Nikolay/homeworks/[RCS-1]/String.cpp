@@ -1,12 +1,6 @@
 #include<iostream>
 #include"String.h"
-size_t String::length_of(const char* data) const {
-    size_t i = 0;
-    while( data[i] != 0 ){
-        ++i;
-    }
-    return i;
-}
+#include<cstring>
 
 void String::copy(const String& other) {
     _capacity = other._capacity;
@@ -29,7 +23,7 @@ String::String(const String& other) {
 }
 
 String::String(const char* data) {
-    _size = length_of(data);
+    _size = strlen(data);
     _capacity = 2*_size;
     
     str = new char[_capacity];
@@ -71,9 +65,7 @@ void String::resize(const size_t& n) {
     new_buffer[_size] = '\0';
 
     delete [] str;
-    str = new_buffer;
-    
-    
+    str = new_buffer;  
 }
 
 void String::push(const char& c) {
@@ -169,11 +161,11 @@ String& String::operator += (const String& other) {
 }
 
 char& String::operator[] (const size_t& i) {
-    return at(i);
+    return str[i];
 }
 
 const char& String::operator[] (const size_t& i) const {
-    return at(i);
+    return str[i];
 }
 
 String::operator bool () const {
@@ -193,7 +185,7 @@ std::ostream& operator << (std::ostream& out, const String& current) {
 std::istream& operator >> (std::istream& in, String& current) {
     current.resize(256);
     in >> current.str;
-    current._size = current.length_of(current.str);
-    current.shrink_to_fit();
+    current._size = strlen(current.str);
+    current.resize(2*current._size);
     return in;
 }
