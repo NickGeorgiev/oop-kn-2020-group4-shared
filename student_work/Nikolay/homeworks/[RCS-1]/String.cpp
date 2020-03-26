@@ -8,10 +8,31 @@ size_t String::length_of(const char* data) const {
     return i;
 }
 
-void String::copy(const char* data) {
-    size_t _size = length_of(data);
+void String::copy(const String& other) {
+    _capacity = other._capacity;
+    _size = other._size;
     
-    str = new (std::nothrow) char[cap];
+    str = new char[_capacity];
+
+    for(int i = 0 ; i < _size ; ++i) {
+        str[i] = other.str[i];
+    }
+    str[_size] = '\0';
+}
+
+////
+
+String::String() : str{nullptr} , _capacity{0} , _size{0} { }
+
+String::String(const String& other) {
+    copy(other.str);
+}
+
+String::String(const char* data) {
+    _size = length_of(data);
+    _capacity = 2*_size;
+    
+    str = new char[_capacity];
 
     for(int i = 0 ; i < _size ; ++i) {
         str[i] = data[i];
@@ -19,98 +40,68 @@ void String::copy(const char* data) {
     str[_size] = 0;
 }
 
-////
-
-String::String() : str{nullptr} , cap{0} { }
-
-String::String(const String& other) : cap{other.cap} {
-    copy(other.str);
-}
-
-String::String(const char* data) {
-    cap = 2*length_of(data);
-    copy(data);
-}
-
 String& String::operator = (const String& other) {
     if(this != &other) {
-        cap = other.cap;
         delete [] str;
         copy(other.str);
     }
+    return *this;
 }
 
 String::~String() {
     delete [] str;
-    cap = 0;
+    _capacity = 0;
+    _size = 0;
 }
 
 ////
 
-void String::resize(size_t n) {
-    if(n == 0) {
-        ++n; //space for 0
+void String::resize(const size_t& n) {
+    _capacity = n;
+    if (n < _size) {
+        _size = n-1;
     }
-    else {
-        size_t _size = std::min(size(),n-1);
-        char* new_buffer = new (std::nothrow) char[n];
 
-        for(int i = 0 ; i < _size ; ++i) {
-            new_buffer[i] = str[i];
-        }
-        new_buffer[_size] = 0;
+    char* new_buffer = new char[n];
 
-        delete [] str;
-        str = new_buffer;
-        cap = n;
+    for(int i = 0 ; i < _size ; ++i) {
+        new_buffer[i] = str[i];
     }
+    new_buffer[_size] = '\0';
+
+    delete [] str;
+    str = new_buffer;
+    
+    
 }
 
 void String::push(const char& c) {
-    size_t _size = size();
-
-    if(( _size + 2 ) > cap ) {
+    if(( _size + 2 ) > _capacity ) {
         resize(2*_size+1);
     }
     str[_size] = c;
-    str[_size+1] = 0;
+    str[_size+1] = '\0';
+    ++_size;
 }
 
 size_t String::size() const {
-    if(cap == 0 || !str) {
-        return 0;
-    }
-    return length_of(str);
+    return _size;
 }
 
 size_t String::capacity() const {
-    if(str) {
-        return cap;
-    }
-    return 0;
+   return _capacity;
 }
 
 bool String::empty() const {
-    return size() == 0;
+    return _size == 0;
 }
 
 char& String::at(size_t pos) {
-    if(pos < cap) {
-        return str[pos];
-    }
-    else {
-        std::cout << "Out of bounds!";
-    }        
+    return str[pos];        
 }
 
-
 const char& String::at(size_t pos) const {
-    if(pos < cap) {
-        return str[pos];
-    }
-    else {
-        std::cout << "Out of bounds!";
-    }
+    return str[pos];
 }
 
 char& String::front() {
@@ -122,32 +113,27 @@ const char& String::front() const {
 }
 
 char& String::back() {
-    size_t _size = size();
     return at(_size-1);
 }
 
 const char& String::back() const {
-    size_t _size = length_of(str);
     return at(_size-1);
 }
 
 String& String::append(const String& other) {
-    size_t _size = size();
-    size_t _other_size = other.size();
-
-    if((_size + _other_size + 1) > cap) {
-        resize((_size + _other_size)*2);
+    if((_size + other._size + 1) > _capacity) {
+        resize((_size + other._size)*2);
     }
 
-    for(int i = 0 ; i < _other_size ; ++i) {
+    for(int i = 0 ; i < other._size ; ++i) {
         str[i+_size] = other.str[i];
     }
-    str[_size + _other_size] = 0;
+    str[_size + other._size] = '\0';
+    _size = _size + other._size;
 }
 
 char* String::c_str() {
-    size_t _size = size();
-    char* new_str = new (std::nothrow) char[_size+1];
+    char* new_str = new char[_size+1];
 
     for(int i = 0 ; i < _size ; ++i) {
         new_str[i] = str[i];
@@ -157,21 +143,19 @@ char* String::c_str() {
 }
 
 void String::shrink_to_fit() {
-    size_t _size = size();
     resize(_size+1);
 }
 
 void String::resize(size_t n , const char& character) {
-    size_t _size = size();
     resize(n);
 
-    for(int i = _size ; i < cap-1 ; ++i) {
+    for(int i = _size ; i < _capacity-1 ; ++i) {
         str[i] = character;
     }
-    str[cap-1] = 0;
+    str[_capacity-1] = '\0';
 }
 
-String String::operator + (const String& other) {
+String String::operator + (const String& other) const{
     String res(*this);
     res.append(other);
     return res;
@@ -191,32 +175,24 @@ const char& String::operator[] (size_t i) const {
     return at(i);
 }
 
-String::operator bool () const { //it doesnt`let me define this as explicit outside of the class declaration
+String::operator bool () const {
     return !empty();
 }
 
 std::ostream& operator << (std::ostream& out, const String& current) {
     if(current.str) {
         out << current.str;
-        return out;
     }
+    else {
+        out << '\n';
+    }
+    return out;
 }
 
 std::istream& operator >> (std::istream& in, String& current) {
-    size_t stat_cap;
-    if(current.cap > 1000) {
-        stat_cap = current.cap;
-    }
-    else{
-        stat_cap = 1000;    //for smaller strings i don`t want to resize in advance
-    }
-    char input[stat_cap];
-    in >> input;
-
-    delete [] current.str;
-    size_t _size = current.length_of(input);
-    current.cap = 2*_size + 1;
-    current.copy(input);
-
+    current.resize(256);
+    in >> current.str;
+    current._size = current.length_of(current.str);
+    current.shrink_to_fit();
     return in;
 }

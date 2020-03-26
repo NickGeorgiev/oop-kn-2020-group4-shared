@@ -8,7 +8,6 @@ void Test() {
     std::cout << "Sizes of fire " << s_coded.size() << " " << s_coded.capacity() << std::endl;
     std::cout << "Empty strings: " << s_in.empty() << " " << !((bool) s_empty) << std::endl;
     std::cout << "A tree is on " << s_coded.front() << s_coded[1] << s_coded.at(2) << s_coded.back() << '.' << std::endl;
-    s_in.resize(0);
 
     s_empty += s_coded;
     s_empty.push('.');

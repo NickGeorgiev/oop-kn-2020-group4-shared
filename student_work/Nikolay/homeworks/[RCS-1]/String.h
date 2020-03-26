@@ -1,9 +1,10 @@
 class String {
     char* str;
-    size_t cap;
+    size_t _capacity;
+    size_t _size;
 
     size_t length_of(const char*) const;
-    void copy(const char*);
+    void copy(const String&);
     friend std::istream& operator >> (std::istream& , String&);
     friend std::ostream& operator << (std::ostream& , const String&);
 
@@ -14,7 +15,7 @@ class String {
     String(const char*);
     String& operator = (const String&);
     ~String();
-    void resize(size_t);
+    void resize(const size_t&);
     void push(const char&);
     size_t size() const;
     size_t capacity() const;
@@ -29,9 +30,11 @@ class String {
     char* c_str();
     void shrink_to_fit();
     void resize(size_t, const char&);
-    String operator + (const String&);
+    String operator + (const String&) const;
     String& operator += (const String&);
     char& operator[] (size_t);
     const char& operator[] (size_t) const;
-    operator bool () const;
+    explicit operator bool () const;
 };
+    std::ostream& operator << (std::ostream&, const String&);
+    std::istream& operator >> (std::istream& in, String& current);
