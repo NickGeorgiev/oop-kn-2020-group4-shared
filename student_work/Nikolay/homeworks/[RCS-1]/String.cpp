@@ -41,6 +41,7 @@ String::String(const char* data) {
 }
 
 String& String::operator = (const String& other) {
+    
     if(this != &other) {
         delete [] str;
         copy(other.str);
@@ -96,11 +97,11 @@ bool String::empty() const {
     return _size == 0;
 }
 
-char& String::at(size_t pos) {
+char& String::at(const size_t& pos) {
     return str[pos];        
 }
 
-const char& String::at(size_t pos) const {
+const char& String::at(const size_t& pos) const {
     return str[pos];
 }
 
@@ -146,7 +147,7 @@ void String::shrink_to_fit() {
     resize(_size+1);
 }
 
-void String::resize(size_t n , const char& character) {
+void String::resize(const size_t& n , const char& character) {
     resize(n);
 
     for(int i = _size ; i < _capacity-1 ; ++i) {
@@ -167,11 +168,11 @@ String& String::operator += (const String& other) {
     return *this;
 }
 
-char& String::operator[] (size_t i) {
+char& String::operator[] (const size_t& i) {
     return at(i);
 }
 
-const char& String::operator[] (size_t i) const {
+const char& String::operator[] (const size_t& i) const {
     return at(i);
 }
 

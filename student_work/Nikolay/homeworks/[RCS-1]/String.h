@@ -20,8 +20,8 @@ class String {
     size_t size() const;
     size_t capacity() const;
     bool empty() const;
-    char& at(size_t);
-    const char& at(size_t) const;
+    char& at(const size_t&);
+    const char& at(const size_t&) const;
     char& front();
     const char& front() const;
     char& back();
@@ -29,11 +29,11 @@ class String {
     String& append(const String&);
     char* c_str();
     void shrink_to_fit();
-    void resize(size_t, const char&);
+    void resize(const size_t&, const char&);
     String operator + (const String&) const;
     String& operator += (const String&);
-    char& operator[] (size_t);
-    const char& operator[] (size_t) const;
+    char& operator[] (const size_t&);
+    const char& operator[] (const size_t&) const;
     explicit operator bool () const;
 };
     std::ostream& operator << (std::ostream&, const String&);
