@@ -34,25 +34,24 @@ public:
 
     size_t size() const;
     size_t capacity() const;
-    char& at(const int) const;
-    char& front() const;
-    char& back() const;
+    char& at(const int&);
+    char& front();
+    char& back();
     char* c_str() const;
     bool empty() const;
 
-    void push(const char);   
+    void push(const char&);   
     void append(const String&);
 
     void shrink_to_fit();
     void resize(const size_t&);
-    void resize(const size_t&, const char);
+    void resize(const size_t&, const char&);
 
 private:
     // Private constructor
     String(const char* const, const size_t&, const size_t&);
 
     // Private functions
-    void appendCharacter(const char);
+    void appendCharacter(const char&);
 };
-
 #endif

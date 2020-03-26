@@ -28,15 +28,15 @@ size_t String::size() const {
 size_t String::capacity() const {
     return _capacity;
 }
-char& String::at(const int pos) const {
+char& String::at(const int& pos) {
     assert(!empty() && pos >= 0 && pos < _size);
     return *(data + pos);
 }
-char& String::front() const {
+char& String::front() {
     assert(!empty());
     return *(data);
 }
-char& String::back() const {
+char& String::back() {
     assert(!empty());
     return *(data + _size - 1);
 }
@@ -49,7 +49,7 @@ bool String::empty() const {
     return _size == 0;
 }
 
-void String::push(const char character) {
+void String::push(const char& character) {
     appendCharacter(character);
     data[_size] = '\0';
 } 
@@ -74,7 +74,7 @@ void String::resize(const size_t& newCapacity) {
     delete[] data;
     data = newContainer;
 }
-void String::resize(const size_t& newCapacity, const char filler) {
+void String::resize(const size_t& newCapacity, const char& filler) {
     resize(newCapacity);
     int difference = newCapacity - _size - 1;
     for (size_t i = 0; i < difference; i++)
@@ -106,7 +106,7 @@ String& String::operator +=(const String& toAppend) {
     return (*this);
 }
 const char String::operator[](const size_t& pos) const {
-    return at(pos);
+    return data[pos];
 }
 char& String::operator[](const size_t& pos) {
     return at(pos);
@@ -128,7 +128,7 @@ String::operator bool() const {
 
 // Private methods
 
-void String::appendCharacter(const char character) {
+void String::appendCharacter(const char& character) {
     if(_size + 1 >= _capacity) {
         resize(_capacity*2);
     }
