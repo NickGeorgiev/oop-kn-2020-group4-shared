@@ -64,8 +64,10 @@ void String::shrink_to_fit() {
     resize(_size + 1);
 }
 void String::resize(const size_t& newCapacity) {
+    if(_capacity == newCapacity) return;
+    
     if(newCapacity < _size + 1) {
-        return;
+        _size = newCapacity - 1;
     }
 
     _capacity = newCapacity;
@@ -73,6 +75,7 @@ void String::resize(const size_t& newCapacity) {
     strcpy(newContainer, data);
     delete[] data;
     data = newContainer;
+    data[_size] = '\0';
 }
 void String::resize(const size_t& newCapacity, const char& filler) {
     resize(newCapacity);
