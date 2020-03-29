@@ -69,7 +69,7 @@ void String::resize(const size_t& n) {
 
 void String::push(const char& c) {
     if(( _size + 2 ) > _capacity ) {
-        resize(2*_size+1);
+        resize(2*(_size+1));
     }
     str[_size] = c;
     str[_size+1] = '\0';
@@ -140,11 +140,11 @@ void String::shrink_to_fit() {
 
 void String::resize(const size_t& n , const char& character) {
     resize(n);
-
     for(int i = _size ; i < _capacity-1 ; ++i) {
         str[i] = character;
     }
-    str[_capacity-1] = '\0';
+    _size = _capacity-1;
+    str[_size] = '\0';
 }
 
 String String::operator + (const String& other) const{
