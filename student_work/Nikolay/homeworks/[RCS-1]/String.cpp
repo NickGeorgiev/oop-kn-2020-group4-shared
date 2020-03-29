@@ -35,7 +35,6 @@ String::String(const char* data) {
 }
 
 String& String::operator = (const String& other) {
-    
     if(this != &other) {
         delete [] str;
         copy(other.str);

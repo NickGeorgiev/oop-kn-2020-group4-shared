@@ -1,3 +1,5 @@
+#ifndef __STRING_H
+#define __STRING_H
 class String {
     char* str;
     size_t _capacity;
@@ -36,5 +38,6 @@ class String {
     const char& operator[] (const size_t&) const;
     explicit operator bool () const;
 };
-    std::ostream& operator << (std::ostream&, const String&);
-    std::istream& operator >> (std::istream& in, String& current);
+std::ostream& operator << (std::ostream&, const String&);
+std::istream& operator >> (std::istream& in, String& current);
+#endif
