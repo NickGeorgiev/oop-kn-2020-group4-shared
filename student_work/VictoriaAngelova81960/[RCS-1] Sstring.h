@@ -24,7 +24,7 @@ class String {
     char front () const;
     char back () const;
     void append (const String& appStr);
-    char* c_char ();
+    char* c_str ();
     void shrink_to_fit ();
     void resize (const size_t n);
     void resize (const size_t& n, char character);
