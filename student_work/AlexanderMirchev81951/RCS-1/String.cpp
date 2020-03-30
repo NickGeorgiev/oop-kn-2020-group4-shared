@@ -40,6 +40,16 @@ char& String::back() {
     assert(!empty());
     return *(data + _size - 1);
 }
+const char String::at(const int& pos) const {
+    assert(!empty() && pos >= 0 && pos < _size);
+    return data[pos];
+}
+const char String::front() const {
+    return data[0];
+}   
+const char String::back() const {   
+    return data[_size - 1];
+}
 char* String::c_str() const {
     char* newString = new char[_size + 1];
     strcpy(newString, data);
@@ -106,6 +116,7 @@ String String::operator +(const String& toAppend) const {
 }
 String& String::operator +=(const String& toAppend) {
     append(toAppend);
+    shrink_to_fit();
     return (*this);
 }
 const char String::operator[](const size_t& pos) const {

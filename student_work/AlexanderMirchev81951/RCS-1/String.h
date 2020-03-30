@@ -37,6 +37,9 @@ public:
     char& at(const int&);
     char& front();
     char& back();
+    const char at(const int&) const;
+    const char front() const;
+    const char back() const;
     char* c_str() const;
     bool empty() const;
 
