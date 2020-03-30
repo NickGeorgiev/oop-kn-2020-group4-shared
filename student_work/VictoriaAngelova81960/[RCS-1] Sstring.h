@@ -3,28 +3,33 @@
 
 class String {
     char* str;
-    size_t size;
-    size_t capacity;
+    size_t _size;
+    size_t _capacity;
+    void String::_resize ();
     public:
     String ();
-    String (const size_t& _capacity);
+    String (const size_t& capacity);
     String (const String& other);
     String& operator = (const String& other);
     ~String ();
     String (const char* array);
     void push (char elem);
-    size_t _size () const ;
-    size_t _capacity const ();
+    size_t size () const ;
+    size_t capacity () const;
     bool empty () const ;
     char& at (const size_t& pos);
     char& front ();
     char& back ();
+    char at (const size_t& pos) const;
+    char front () const;
+    char back () const;
     void append (const String& appStr);
     char* c_char ();
     void shrink_to_fit ();
     void resize (const size_t n);
     void resize (const size_t& n, char character);
     char& operator [] (const size_t& pos);
+    char operator [] (const size_t& pos) const;
     operator bool () const ;
     String& operator += (const String& otherString);
     String operator + (const String& otherString) const ;
