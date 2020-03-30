@@ -184,10 +184,17 @@ std::ostream& operator << (std::ostream& out, const String& s) {
 }
 
 std::istream& operator >> (std::istream& in, String& s) {
-    std::cout<<"Capacity = ";
-    in>>s.capacity;
-    s.str=new char[s.capacity]; 
-    in>>s.str;
-    s.size=strlen(s.str);
+    size_t i=0;
+    s.str=new char[i];
+    char elem;
+    in>>elem;
+    while(elem!='\n' && elem!=' ') {
+        s.str[i]=elem;
+        elem=getchar();
+        i++;
+    }
+    s.capacity=i+1; 
+    s.size=i;
+    s.str[s.size]=0;
     return in;
 }
