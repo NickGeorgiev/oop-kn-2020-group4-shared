@@ -9,6 +9,17 @@ String::String (const String& other) : capacity{other.capacity}, size{other.size
     strcpy(str, other.str);
 }
 
+String& String::operator = (const String& other) {
+    if(this!=&other) {
+        delete [] str;
+        capacity=other.capacity;
+        size=other.size;
+        str=new char[other.capacity];
+        strcpy(str,other.str);
+    }
+    return *this;
+}
+
 String::~String () {
     delete [] str;
     str=nullptr;
@@ -21,6 +32,10 @@ String::String (const char* array) {
     size=strlen(array);
     str=new char[capacity];
     strcpy(str, array);
+    //ако не можем да използваме cstring
+    /*for(int i=0;i<size;i++) {   
+         str[i]=array[i];
+     }*/
 }
 
 void String::push (char elem) {
@@ -35,15 +50,15 @@ void String::push (char elem) {
     str=newString;
 }
 
-size_t String::_size () {
+size_t String::_size () const {
     return size;
 }
 
-size_t String::_capacity () {
+size_t String::_capacity () const {
     return capacity;
 }
 
-bool String::empty () {
+bool String::empty () const {
     return size==0;
 }
 
@@ -117,7 +132,7 @@ char& String::operator [] (const size_t& pos) {
     return str[pos];
 }
 
-String::operator bool () {
+String::operator bool () const {
     return size==0;
 }
 
@@ -126,14 +141,14 @@ String& String::operator += (const String& otherString) {
     return *this;
 }
 
-String String::operator + (const String& otherString) {
+String String::operator + (const String& otherString) const {
     String result(*this);
     result+=otherString;
     std::cout<<result<<std::endl;
     return result;
 }
 
-std::ostream& operator << (std::ostream& out, String& s) {
+std::ostream& operator << (std::ostream& out, const String& s) {
     assert(s.capacity>=s.size);
     out<<s.str;
     return out;
