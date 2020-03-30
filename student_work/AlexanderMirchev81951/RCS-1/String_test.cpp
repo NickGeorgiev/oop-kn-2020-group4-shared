@@ -201,36 +201,46 @@ TEST_SUITE ("String class test suite") {
         }     
     }
 
-    TEST_CASE("Operators") {
-        SUBCASE("Operator =") {
+    TEST_CASE("Operator =") {
+        const String string(TEST_STRING_DATA);
+        const String newString = string;
+        checkString(newString, string);
+    }
+    TEST_CASE("Operator +") {
+        const String string1("test1");
+        const String string2("test2");
+
+        checkString(string1 + string2, String("test1test2"));
+    }
+    TEST_CASE("Operator +=") {
+        String string1("test1");
+        const String string2("test2");
+
+        string1 += string2;
+        checkString(string1, String("test1test2"));
+    }
+    TEST_CASE("Operator []") {
+        SUBCASE("Constant") {
             const String string(TEST_STRING_DATA);
-            const String newString = string;
-            checkString(newString, string);
+            CHECK(string[0] == TEST_STRING_DATA[0]);
+            CHECK(string[3] == TEST_STRING_DATA[3]);
         }
-        SUBCASE("Operator +") {
-            const String string1("test1");
-            const String string2("test2");
-
-            checkString(string1 + string2, String("test1test2"));
-        }
-        SUBCASE("Operator +=") {
-            String string1("test1");
-            const String string2("test2");
-
-            string1 += string2;
-            checkString(string1, String("test1test2"));
-        }
-        SUBCASE("Operator [] const") {
-            const String constString("test");
-            CHECK(constString[0] == 't');
-            CHECK(constString[3] == 't');
-        }
-        SUBCASE("Operator []") {
-            String string("test");
-            CHECK(string[0] == 't');
-            CHECK(string[3] == 't');
+        SUBCASE("Mutating") {
+            String string(TEST_STRING_DATA);
+            CHECK(string[0] == TEST_STRING_DATA[0]);
+            CHECK(string[3] == TEST_STRING_DATA[3]);
             string[2] = 'a';
             checkString(string, "teat", 4, 5);
+        }
+    }
+    TEST_CASE("Explicit operator bool") {
+        SUBCASE("True") {
+            const String _true(TEST_STRING_DATA);
+            CHECK(bool(_true));
+        }
+        SUBCASE("False") {
+            const String _false(EMPTY_STRING_DATA);
+            CHECK(!bool(_false));
         }
     }
 
