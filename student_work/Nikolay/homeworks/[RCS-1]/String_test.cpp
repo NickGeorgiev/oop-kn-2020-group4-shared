@@ -13,7 +13,11 @@ TEST_CASE("Return char-array") {
 	String s1("Peach");
 	char* str = s1.c_str();
 
+	CHECK(str[0] == 'P');
+	CHECK(str[1] == 'e');
 	CHECK(str[2] == 'a');
+	CHECK(str[3] == 'c');
+	CHECK(str[4] == 'h');
 	CHECK(str[5] == '\0');
 	CHECK(strlen(str) == s1.size());
 	delete [] str;
@@ -25,12 +29,6 @@ TEST_CASE("Index operator") {
 	char* str = s1.c_str();
 	CHECK(strcmp(str,"Ample") == 0);
 	delete [] str;
-
-	const String s2("Pear");
-
-	str = s2.c_str();
-	CHECK(strcmp(str,"Pear") == 0);
-	delete [] str;
 }
 TEST_CASE("Copyconstructing") {
 	String s1("Apple");
@@ -39,13 +37,11 @@ TEST_CASE("Copyconstructing") {
 	CHECK(s2.size() == 5);
 	CHECK(s2.capacity() == 10);
 
+	s1[0] = 'a';
+
 	char* str = s2.c_str();
 	CHECK(strcmp(str,"Apple") == 0);
 	delete [] str;
-
-	s1[0] = 'a';
-	CHECK(s1[0] == 'a');
-	CHECK(s2[0] == 'A');
 }
 TEST_CASE("Assignment") {
 	String s1("Apple");
@@ -56,13 +52,11 @@ TEST_CASE("Assignment") {
 	CHECK(s3.size() == 5);
 	CHECK(s3.capacity() == 10);
 
+	s1[0] = 'a';
+
 	char* str = s3.c_str();
 	CHECK(strcmp(str,"Apple") == 0);
 	delete [] str;
-
-	s1[0] = 'a';
-	CHECK(s1[0] == 'a');
-	CHECK(s2[0] == 'A');
 }
 TEST_CASE("Push") {
 	String s1("Apple");
@@ -107,7 +101,10 @@ TEST_CASE("At") {
 
 	String s2("Apple");
 	s2.at(1) = 'm';
-	CHECK(s2.at(1) == 'm');
+
+	char* str = s2.c_str();
+	CHECK(strcmp(str,"Ample") == 0);
+	delete [] str;
 }
 TEST_CASE("Front") {
 	const String s1("Apple");
@@ -115,7 +112,10 @@ TEST_CASE("Front") {
 
 	String s2("juice");
 	s2.front() = 'J';
-	CHECK(s2.front() == 'J');
+
+	char* str = s2.c_str();
+	CHECK(strcmp(str,"Juice") == 0);
+	delete [] str;
 }
 TEST_CASE("Back") {
 	const String s1("Apple");
@@ -123,7 +123,10 @@ TEST_CASE("Back") {
 
 	String s2("juice");
 	s2.back() = 'y';
-	CHECK(s2.back() == 'y');
+
+	char* str = s2.c_str();
+	CHECK(strcmp(str,"juicy") == 0);
+	delete [] str;
 }
 TEST_CASE("Append with enough capacity") {
 	String s1("I like white ");
@@ -133,17 +136,12 @@ TEST_CASE("Append with enough capacity") {
 	CHECK(s1.size() == 19);
 	CHECK(s1.capacity() == 26);
 
-	//checking if change to s2 affect s1
-	s2[1] = 'n';
-	s2[2] = 'o';
-	s2[3] = 'm';
-
 	char* str = s1.c_str();
 	CHECK(strcmp(str,"I like white Grapes") == 0);
 	delete [] str;
 
 	str = s2.c_str();
-	CHECK(strcmp(str,"Gnomes") == 0);
+	CHECK(strcmp(str,"Grapes") == 0);
 	delete [] str;
 }
 TEST_CASE("Append with change in capacity") {
@@ -177,19 +175,15 @@ TEST_CASE("Resize") {
 	CHECK(s1.size() == 10);
 	CHECK(s1.capacity() == 20);
 
-	CHECK(s1[0] == 'A');
-	CHECK(s1[4] == 'e');
-	CHECK(s1[10] == '\0');
-
 	String s2("Pear");
 	s2.resize(2);
 
 	CHECK(s2.size() == 2);
 	CHECK(s2.capacity() == 4);
 
-	CHECK(s2[0] == 'P');
-	CHECK(s2[1] == 'e');
-	CHECK(s2[2] == '\0');
+	char* str = s2.c_str();
+	CHECK(strcmp(str,"Pe") == 0);
+	delete [] str;
 }
 TEST_CASE("Resize with fill") {
 	String s1("Banana");
@@ -211,8 +205,9 @@ TEST_CASE("Operator +") {
 	CHECK(strcmp(str,"Milkshake") == 0);
 	delete [] str;
 
-	//testing if s1 is modified
-	CHECK(s1[4] == '\0');
+	str = s1.c_str();
+	CHECK(strcmp(str,"Milk") == 0);
+	delete [] str;
 	//i am not going to test with empty strings because this operator uses copyconstructing and append and they are already tested
 }
 TEST_CASE("Operator +=") {
