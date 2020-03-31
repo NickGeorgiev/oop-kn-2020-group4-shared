@@ -30,7 +30,7 @@ class String {
     void resize (const size_t& n, char character);
     char& operator [] (const size_t& pos);
     char operator [] (const size_t& pos) const;
-    operator bool () const ;
+    explicit operator bool () const ;
     String& operator += (const String& otherString);
     String operator + (const String& otherString) const ;
     friend std::ostream& operator << (std::ostream& out, const String& s);
