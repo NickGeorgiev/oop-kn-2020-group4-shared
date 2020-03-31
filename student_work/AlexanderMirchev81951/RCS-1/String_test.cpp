@@ -206,19 +206,20 @@ TEST_SUITE ("String class test suite") {
         const String newString = string;
         checkString(newString, string);
     }
+
     TEST_CASE("Operator +") {
         const String string1("test1");
         const String string2("test2");
-
         checkString(string1 + string2, String("test1test2"));
     }
+
     TEST_CASE("Operator +=") {
         String string1("test1");
         const String string2("test2");
-
         string1 += string2;
         checkString(string1, String("test1test2"));
     }
+
     TEST_CASE("Operator []") {
         SUBCASE("Constant") {
             const String string(TEST_STRING_DATA);
@@ -233,6 +234,7 @@ TEST_SUITE ("String class test suite") {
             checkString(string, "teat", 4, 5);
         }
     }
+    
     TEST_CASE("Explicit operator bool") {
         SUBCASE("True") {
             const String _true(TEST_STRING_DATA);
