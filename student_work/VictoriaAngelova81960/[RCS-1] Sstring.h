@@ -5,7 +5,7 @@ class String {
     char* str;
     size_t _size;
     size_t _capacity;
-    void String::_resize ();
+    void _resize ();
     public:
     String ();
     String (const size_t& capacity);
