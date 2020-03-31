@@ -7,7 +7,7 @@
 void String::_resize () {
     _capacity *= 2;
     char* newStr = new char[_capacity];
-    for(int i=0;i< _size; i++) {
+    for(int i=0;i<_size;i++) {
         newStr[i] = str[i];
     }
     delete [] str;
@@ -38,7 +38,7 @@ String::~String () {
 }
 
 String::String (const char* array) {
-    _capacity=strlen(array);
+    _capacity=strlen(array)+1;
     _size=strlen(array);
     str=new char[_capacity];
     strcpy(str, array);
@@ -48,6 +48,7 @@ void String::push (char elem) {
     if(_capacity-_size==1) {
         _resize();
     }
+    char* newString=new char[_capacity];
     strcpy(newString, str);
     newString[_size]=elem;
     newString[_size+1]=0;
@@ -101,7 +102,7 @@ char String::back () const {
 }
 
 void String::append (const String& appStr) {
-    if((_capacity-(_size+appStr._size))==1) {
+    if(_capacity<=_size+appStr._size) {
         _resize();
     }
     char* newString=new char[_capacity];
@@ -147,7 +148,7 @@ void String::resize (const size_t& n, char character) {
     char* biggerString=new char[_capacity];
     strcpy(biggerString, str);
     while(_size<n) {
-        biggerString[_size++]=_character;
+        biggerString[_size++]=character;
     }
     biggerString[_size]=0;
     delete [] str;
