@@ -13,7 +13,7 @@ void String::_resize () {
     delete [] str;
     str = newStr;
 }
-String::String () : str{nullptr}, size{0}, capacity{0} {}
+String::String () : String(1) {}
 String::String (const size_t& capacity) : _capacity{capacity}, str{new char[capacity]}, _size{0} {}
 String::String (const String& other) : _capacity{other._capacity}, _size{other._size}, str{new char[other._capacity]} {
     strcpy(str, other.str);
@@ -122,7 +122,7 @@ char* String::c_str () {
 void String::shrink_to_fit () {
     if(strlen(str)>0) {
         _capacity=_size+1;
-        char* newString=new char[_capacity+1];
+        char* newString=new char[_capacity];
         strcpy(newString, str);
         delete [] str;
         str=newString;
@@ -146,9 +146,8 @@ void String::resize (const size_t& n, char character) {
     }
     char* biggerString=new char[_capacity];
     strcpy(biggerString, str);
-    while(_size<=n) {
-        size++;
-        biggerString[_size-1]=_character;
+    while(_size<n) {
+        biggerString[_size++]=_character;
     }
     biggerString[_size]=0;
     delete [] str;
@@ -164,7 +163,7 @@ char String::operator [] (const size_t& pos) const {
 }
 
 String::operator bool () const {
-    return _size==0;
+    return empty();
 }
 
 String& String::operator += (const String& otherString) {
