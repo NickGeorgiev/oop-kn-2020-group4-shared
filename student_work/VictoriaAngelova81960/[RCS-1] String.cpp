@@ -7,9 +7,7 @@
 void String::_resize () {
     _capacity *= 2;
     char* newStr = new char[_capacity];
-    for(int i=0;i<_size;i++) {
-        newStr[i] = str[i];
-    }
+    strcpy(newStr, str);
     delete [] str;
     str = newStr;
 }
