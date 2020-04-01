@@ -5,17 +5,15 @@
 
 #include "String.h"
 
-void String::copyString (const char* _myString, const size_t& _size, const size_t& _capacity)
+
+void String::copyString (const char* _myString, const size_t& _capacity)
 {
-    mySize = _size;
+    mySize = strlen(_myString);
     myCapacity = _capacity;
 
     myString = new (std::nothrow) char [myCapacity];
-    for (int i=0; i<mySize; i++)
-    {
-        myString[i] = _myString[i];
-    }
-    myString[mySize] = '\0';
+    assert (myString != nullptr);
+    strcpy(myString, _myString);
 }
 
 void String::deleteString ()
@@ -28,11 +26,11 @@ void String::deleteString ()
 String::String (): myString {nullptr}, mySize {0}, myCapacity {0} {}
 String::String (const char* _myString)
 {
-    this->copyString(_myString, strlen(_myString), 2*strlen(_myString));
+    this->copyString(_myString, 2*strlen(_myString));
 }
 String::String (const String& other)
 {
-    this->copyString(other.myString, other.mySize, other.myCapacity);
+    this->copyString(other.myString, other.myCapacity);
 }
 
 String::~String ()
@@ -45,7 +43,7 @@ String& String::operator = (const String& other)
     if (this != &other)
     {
         this->deleteString();
-        this->copyString(other.myString, other.mySize, other.myCapacity);
+        this->copyString(other.myString, other.myCapacity);
     }
 
     return *this;
@@ -74,7 +72,7 @@ const char& String::operator [] (const size_t& pos) const
     return this->at(pos);
 }
 
-String::operator bool ()
+String::operator bool () const
 {
     this->empty();
 }
@@ -84,7 +82,7 @@ void String::push (const char& element)
 {
     if (mySize+1 == myCapacity) 
     {
-        this->copyString(myString, mySize, 2*myCapacity);
+        this->copyString(myString, 2*myCapacity);
     }
 
     myString[mySize] = element;
@@ -102,23 +100,39 @@ size_t String::capacity () const
     return myCapacity;
 }
 
-bool String::empty ()
+bool String::empty () const
 {
     return mySize == 0;  
 }
 
-char& String::at (const size_t& pos) const
+char& String::at (const size_t& pos)
 {
     assert (pos>=0 && pos<mySize);
     return myString[pos];
 }
 
-char& String::front () const
+const char& String::at (const size_t& pos) const
+{
+    assert (pos>=0 && pos<mySize);
+    return myString[pos];
+}
+
+char& String::front ()
 {
     return myString[0];
 }
 
-char& String::back () const
+const char& String::front () const
+{
+    return myString[0];
+}
+
+char& String::back ()
+{
+    return myString[mySize-1];
+}
+
+const char& String::back () const
 {
     return myString[mySize-1];
 }
@@ -129,7 +143,7 @@ void String::append (const String& str)
     {
         myCapacity = 2*(mySize+str.mySize);
     }
-    this->copyString(myString, mySize, myCapacity);
+    this->copyString(myString, myCapacity);
         
     for (int i=0; i<str.mySize; i++)
     {
@@ -142,29 +156,42 @@ void String::append (const String& str)
 
 char* String::c_str () const
 {
-    return myString;
+    char* copy_arr = new char [mySize+1];
+    strcpy(copy_arr, myString);
+    return copy_arr;
 }
 
 void String::shrink_to_fit ()
 {
-    this->copyString(myString, mySize, mySize+1);
+    this->copyString(myString, mySize+1);
 }
 
 void String::resize (const size_t& n)
 {
-    assert(n<=mySize);
-    this->copyString(myString, n, myCapacity);
+    if (n >= myCapacity)
+    {
+        this->copyString(myString, 2*n);
+    }
+    if (n > mySize)
+    {
+        for (int i=mySize; i<n; i++)
+        {
+            myString[i] = ' ';
+        }
+    }
+
+    mySize = n;
+    myString [mySize] = '\0';
 }
 
 void String::resize (const size_t& n, const char& character)
 {
-    assert(n>mySize);
     if (n >= myCapacity)
     {
-        this->copyString(myString, mySize, 2*n);
+        this->copyString(myString, 2*n);
     }
 
-    for (int i=0; i<n-mySize; i++)
+    for (int i=0; i<(int)(n-mySize); i++)
     {
         myString[i+mySize] = character;
     }
@@ -173,16 +200,19 @@ void String::resize (const size_t& n, const char& character)
 }
 
 std::istream& operator >> (std::istream& in, String& str)
-{
+{  
     char arr [100];
     in >> arr;
-    str.copyString(arr, strlen(arr), 2*strlen(arr));
+    str.copyString(arr, 2*strlen(arr));
 
     return in;
 }
 
 std::ostream& operator << (std::ostream& out, const String& str)
 {
-    if (str.mySize != 0) out << str.myString;
+    if (!str.empty())
+    {
+        out << str.myString;
+    }
     return out;
 }

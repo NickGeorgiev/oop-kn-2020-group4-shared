@@ -9,7 +9,7 @@ class String
     size_t mySize;
     size_t myCapacity;
 
-    void copyString (const char*, const size_t&, const size_t&);
+    void copyString (const char*, const size_t&);
     void deleteString ();
 
     public:
@@ -27,15 +27,18 @@ class String
     String& operator += (const String& other);
     char& operator [] (const size_t& pos);
     const char& operator [] (const size_t& pos) const;
-    operator bool ();
+    operator bool () const;
 
     void push (const char&);
     size_t size () const;
     size_t capacity () const;
-    bool empty ();
-    char& at (const size_t& pos) const;
-    char& front () const;
-    char& back () const;
+    bool empty () const;
+    char& at (const size_t& pos);
+    const char& at (const size_t&) const;
+    char& front ();
+    const char& front () const;
+    char& back ();
+    const char& back () const;
     void append (const String& str);
     char* c_str () const;
     void shrink_to_fit ();
