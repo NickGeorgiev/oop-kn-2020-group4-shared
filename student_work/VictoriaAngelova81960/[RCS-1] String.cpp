@@ -83,18 +83,18 @@ char& String::back () {
     return str[_size-1];
 }
 
-char String::at (const size_t& pos) const {
+const char& String::at (const size_t& pos) const {
     assert(_size>0);
     assert(pos<_size);
     return str[pos];
 }
 
-char String::front () const {
+const char& String::front () const {
     assert(_size>0);
     return str[0];
 }
 
-char String::back () const {
+const char& String::back () const {
     assert(_size>0);
     return str[_size-1];
 }
@@ -157,7 +157,7 @@ char& String::operator [] (const size_t& pos) {
     return str[pos];
 }
 
-char String::operator [] (const size_t& pos) const { 
+const char& String::operator [] (const size_t& pos) const { 
     return str[pos];
 }
 
