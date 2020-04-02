@@ -4,11 +4,12 @@
 class String
 {
     char* str;
-    size_t size;
-    size_t capacity;
+    size_t _size;
+    size_t _capacity;
 
     void copy_str(const String& other);
     void del_str();
+    void relocate(size_t cap);
 
     public:
 
@@ -19,13 +20,16 @@ class String
     String(const String& other);
     String& operator = (const String& other);
     ~String();
-    size_t _size() const;
-    size_t _capacity() const;
-    void push(char element);
-    void empty();
-    char& at(size_t pos);
+    size_t size() const;
+    size_t capacity() const;
+    void push(const char& element);
+    bool empty() const;
+    char& at(const size_t& pos);
+    const char& at(const size_t& pos) const;
     char& front();
+    const char& front() const;
     char& back();
+    const char& back() const;
     String& append(const String& _str);
     const char* c_str() const;
     void shrink_to_fit();
@@ -34,7 +38,7 @@ class String
     String operator + (const String& other);
     String& operator += (const String& other);
     char& operator [](size_t pos);
-    const char operator [](size_t pos) const;
+    const char& operator [](size_t pos) const;
     operator bool() const;
 };
 #endif
