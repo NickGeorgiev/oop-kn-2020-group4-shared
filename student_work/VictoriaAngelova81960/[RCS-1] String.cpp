@@ -100,7 +100,7 @@ const char& String::back () const {
 }
 
 void String::append (const String& appStr) {
-    if(_capacity<=_size+appStr._size) {
+    while(_capacity<=_size+appStr._size) {
         _resize();
     }
     char* newString=new char[_capacity];
@@ -140,7 +140,7 @@ void String::resize (const size_t n) {
 }
 
 void String::resize (const size_t& n, char character) {
-    if(_capacity-n==1) {
+    while(_capacity<=n) {
         _resize();
     }
     char* biggerString=new char[_capacity];
