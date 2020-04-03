@@ -5,15 +5,20 @@
 
 #include "String.h"
 
-
 void String::copyString (const char* _myString, const size_t& _capacity)
 {
-    mySize = strlen(_myString);
     myCapacity = _capacity;
-
     myString = new (std::nothrow) char [myCapacity];
-    assert (myString != nullptr);
-    strcpy(myString, _myString);
+
+    if (_myString == nullptr)
+    {
+        mySize = 0;
+    }
+    else
+    {
+        mySize = strlen(_myString);
+        strcpy(myString, _myString);   
+    }
 }
 
 void String::deleteString ()
@@ -78,9 +83,19 @@ String::operator bool () const
 }
 
 
+bool String::operator == (const String& other)
+{
+    return !strcmp(myString, other.myString);
+}
+
+
 void String::push (const char& element)
 {
-    if (mySize+1 == myCapacity) 
+    if(myCapacity == 0)
+    {
+        myCapacity++;
+    }
+    if (mySize+1 >= myCapacity) 
     {
         this->copyString(myString, 2*myCapacity);
     }
