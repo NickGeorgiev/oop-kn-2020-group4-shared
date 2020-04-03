@@ -1,7 +1,7 @@
 #include "String.h"
 #include <iostream>
 #include <cstring>
-
+#include <cassert>
 
 int powerOfTwo(int a)
 {
@@ -15,61 +15,88 @@ int powerOfTwo(int a)
 
 void String::enlarge()
 {
-    if (_capacity > _size)
+  
+    if (_capacity > _size+1)
     {
+  
         return;
     }
-    while (_capacity <= _size)
+
+    while (_capacity <= _size+1)
     {
         _capacity = _capacity * 2;
     }
+ 
     changecap(_capacity);
+
 }
 void String::changecap(int _capacity2)
 {
+    if (_capacity2 == 0)
+    {
+        nullString();
+        return;
+    }
     _capacity = _capacity2;
     char *_data2 = new char[_capacity];
     for (int i = 0; i < _size; i++)
     {
         _data2[i] = _data[i];
     }
-    delete[] _data;
+    if (_data != nullptr)
+    {
+        delete[] _data;
+    }
     _data = _data2;
+    _data[_size] = '\0';
+}
+void String::nullString()
+{
+    _capacity = 8;
+    //функцията enlarge умножава _capacity по 2, затова не може да започваме с 0 
+    _size = 0;
+    _data = new char[_capacity];
 }
 String::String()
 {
-    //std::cout<<"defcon"<<std::endl;
-    _size = 0;
-    _capacity = 1;
-    _data = new char;
+    nullString();
 }
-String::String(char a[])
+String::String(const char *array)
 {
-    // std::cout<<a<<"asdsad";
-    // std::cout<<strlen(a)<<"\n";
-    //std::cout<<"con"<<std::endl;
-    int b = strlen(a);
-    _capacity = powerOfTwo(b);
-    _data = new char[_capacity];
-    for (int i = 0; i < b; i++)
+    int arraysize = strlen(array);
+    if (arraysize == 0)
     {
-        _data[i] = a[i];
+        nullString();
+        return;
     }
-    _data[b] = '\0';
-    _size = b;
+    _capacity = powerOfTwo(arraysize);
+    _data = new char[_capacity];
+    for (int i = 0; i < arraysize; i++)
+    {
+        _data[i] = array[i];
+    }
+    _data[arraysize] = '\0';
+    _size = arraysize;
 }
 String::String(const String &other)
 {
-    //std::cout<<"copicon"<<std::endl;
-    _data = new char;
-    _size = 0;
-    _capacity = 1;
-    operator=(other);
+    nullString();
+    coppy(other);
+}
+void String::coppy(const String& a){
+     _size = a._size;
+    changecap(a._capacity);
+    for (int i = 0; i <_size; i++)
+    {
+        _data[i] = a._data[i];
+    }
+    _data[_size]='\0';
 }
 String::~String()
 {
-    //std::cout<<"destk"<<std::endl;
-    delete[] _data;
+     if (_data != nullptr){
+        delete[] _data;
+     }
 }
 int String::size() const
 {
@@ -83,38 +110,44 @@ bool String::empty() const
 {
     return _size == 0;
 }
-char _error='\0';
-char& String::at(int position) const
-{
 
-    if (position >= 0 && position < _size)
-    {
+char &String::at(int position)
+{
+    assert(position >= 0 && position < _size);
     return _data[position];
-        
-    }
-        return _error;
-    
 }
-char& String::front() const
+char String::at(int position) const
+{
+    assert(position >= 0 && position < _size);
+    return _data[position];
+}
+char &String::front()
 {
     return at(0);
 }
-char& String::back() const
+char String::front() const
+{
+    return at(0);
+}
+char &String::back()
+{
+    return at(_size - 1);
+}
+char String::back() const
 {
     return at(_size - 1);
 }
 void String::print() const
-{
-    for (int i = 0; i < _size; i++)
-    {
-        std::cout << _data[i];
-    }
+{    
+    assert(!empty());
+    std::cout << _data;
 }
-void String::push(char x)
+void String::push(const char& x)
 {
     _size++;
     enlarge();
     _data[_size - 1] = x;
+    _data[_size]='\0';
 }
 void String::printcanonic() const
 {
@@ -139,19 +172,18 @@ void String::printcanonic() const
     }
     delete[] _data2;
 }
-void String::append(char a[])
+void String::append(const char* array)
 {
-    int size2 = strlen(a);
+    int size2 = strlen(array);
     _size = _size + size2;
-
     enlarge();
-
     for (int i = 0; i < size2; i++)
     {
-        _data[_size + i - size2] = a[i];
+        _data[_size + i - size2] = array[i];
     }
+    _data[_size]='\0';
 }
-char* String::c_str() const
+char *String::c_str() const
 {
     char *_data2 = new char[_size + 1];
     for (int i = 0; i < _size; i++)
@@ -163,65 +195,76 @@ char* String::c_str() const
 }
 void String::shrink_to_fit()
 {
-    changecap(_size);
+    changecap(_size+1);
 }
 void String::resize(int x)
 {
     _size = x;
     enlarge();
+    _data[_size]='\0';
 }
-void String::resize(int x, char c)
+void String::resize(const int& newSize, const char& filler)
 {
-    int oldspicesize = _size;
-    resize(x);
-    for (int i = oldspicesize; i < x; i++)
+    
+    int oldsize = _size;
+    
+    resize(newSize);
+    
+    for (int i = oldsize; i < newSize; i++)
     {
-        _data[i] = c;
+        _data[i] = filler;
+    }
+    if(newSize>oldsize){
+    _data[newSize]='\0';
     }
 }
-char& String::operator[](int position) const
+char &String::operator[](int position)
 {
     return at(position);
 }
+char String::operator[](int position) const
+{
+    return at(position);
+}
+
 void String::operator+=(const String &a)
 {
     append(a.c_str());
 }
-void String::operator=(const String &a)
+String String::operator=(const String &a)
 {
-    //std::cout<<"0"<<std::flush;
-    _size = a._size;
-    //std::cout<<"1"<<std::flush;
-    changecap(a._capacity);
-    //std::cout<<"2"<<std::flush;
-    for (int i = 0; i < _size; i++)
-    {
-        _data[i] = a._data[i];
-    }
+    coppy(a);
+    return a;
+    //return(*this);
 }
 String String::operator+(const String &a) const
 {
-    String c;
-    c = (*this);
+    String c(*this);
     c += a;
     return c;
 }
 std::ostream &operator<<(std::ostream &output, const String &a)
 {
-    a.print();
+    output<<a._data;
     return output;
 }
 
 std::istream &operator>>(std::istream &input, String &a)
 {
+    // a.resize(0);
+    // char b;
+    // do
+    // {
+    //     input.get(b);
+    //     a.push(b);
+    // } while (b != ' ' && b != '\n' && b != '\t');
+    // a.resize(a._size - 1);
+    // return input;
     a.resize(0);
-    char b;
-    do
-    {
-        std::cin.get(b);
+    char b='#';
+    while(input>>b){
         a.push(b);
-    } while (b != ' ' && b != '\n' && b != '\t');
-    a.resize(a._size - 1);
+    }
     return input;
 }
 String::operator bool() const
