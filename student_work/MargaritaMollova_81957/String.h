@@ -27,7 +27,7 @@ class String
     String& operator += (const String& other);
     char& operator [] (const size_t& pos);
     const char& operator [] (const size_t& pos) const;
-    operator bool () const;
+    explicit operator bool () const;
 
     void push (const char&);
     size_t size () const;
@@ -40,7 +40,7 @@ class String
     char& back ();
     const char& back () const;
     void append (const String& str);
-    char* c_str () const;
+    const char* c_str () const;
     void shrink_to_fit ();
     void resize (const size_t& n);
     void resize (const size_t& n, const char& character);

@@ -8,13 +8,27 @@
 
 void String::copyString (const char* _myString, const size_t& _capacity)
 {
-    mySize = strlen(_myString);
     myCapacity = _capacity;
-
     myString = new (std::nothrow) char [myCapacity];
-    assert (myString != nullptr);
-    strcpy(myString, _myString);
+
+    if (_myString == nullptr)
+    {
+        mySize = 0;
+        myString[mySize] = '\0';
+    }
+    else if (myString == nullptr)
+    {
+        myCapacity = 0;
+        mySize = 0;
+        myString[mySize] = '\0';
+    }
+    else
+    {
+        mySize = strlen(_myString);
+        strcpy(myString, _myString);
+    }
 }
+
 
 void String::deleteString ()
 {
@@ -74,13 +88,17 @@ const char& String::operator [] (const size_t& pos) const
 
 String::operator bool () const
 {
-    this->empty();
+    return this->empty();
 }
 
 
 void String::push (const char& element)
 {
-    if (mySize+1 == myCapacity) 
+    if(myCapacity == 0)
+    {
+        myCapacity++;
+    }
+    if (mySize+1 >= myCapacity) 
     {
         this->copyString(myString, 2*myCapacity);
     }
@@ -142,19 +160,15 @@ void String::append (const String& str)
     if (myCapacity <= mySize+str.mySize)
     {
         myCapacity = 2*(mySize+str.mySize);
+        this->copyString(myString, myCapacity);
     }
-    this->copyString(myString, myCapacity);
         
-    for (int i=0; i<str.mySize; i++)
-    {
-        myString[i+mySize] = str.myString[i];
-    }
-    myString[mySize+str.mySize] = '\0';
+    strcat(myString, str.myString);
 
     mySize += str.mySize;
 }
 
-char* String::c_str () const
+const char* String::c_str () const
 {
     char* copy_arr = new char [mySize+1];
     strcpy(copy_arr, myString);
@@ -172,15 +186,11 @@ void String::resize (const size_t& n)
     {
         this->copyString(myString, 2*n);
     }
-    if (n > mySize)
+    if (n <= mySize)
     {
-        for (int i=mySize; i<n; i++)
-        {
-            myString[i] = ' ';
-        }
+        mySize = n;
     }
 
-    mySize = n;
     myString [mySize] = '\0';
 }
 
