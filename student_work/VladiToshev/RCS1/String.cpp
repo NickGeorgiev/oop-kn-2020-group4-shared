@@ -222,9 +222,11 @@ std::ostream &operator<<(std::ostream &out, const String &object)
 }
 std::istream &operator>>(std::istream &in, String &object)
 {
+    in >> object._capacity;
+    object.string = new char[object._capacity];
     in >> object.string;
     object._size = strlen(object.string);
-    in >> object._capacity;
+    object.string[object._size] = '\0';
     return in;
 }
 /*int main()
