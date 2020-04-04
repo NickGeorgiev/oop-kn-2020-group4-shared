@@ -13,7 +13,7 @@ class String {
     String& operator = (const String& other);
     ~String ();
     String (const char* array);
-    void push (char elem);
+    void push (const char& elem);
     size_t size () const ;
     size_t capacity () const;
     bool empty () const ;
@@ -24,10 +24,10 @@ class String {
     const char& front () const;
     const char& back () const;
     void append (const String& appStr);
-    char* c_str ();
+    const char* c_str ();
     void shrink_to_fit ();
-    void resize (const size_t n);
-    void resize (const size_t& n, char character);
+    void resize (const size_t& n);
+    void resize (const size_t& n, const char& character);
     char& operator [] (const size_t& pos);
     const char& operator [] (const size_t& pos) const;
     explicit operator bool () const ;
