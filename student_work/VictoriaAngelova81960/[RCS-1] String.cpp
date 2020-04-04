@@ -11,6 +11,7 @@ void String::_resize () {
     delete [] str;
     str = newStr;
 }
+
 String::String () : String(1) {}
 String::String (const size_t& capacity) : _capacity{capacity}, str{new char[capacity]}, _size{0} {}
 String::String (const String& other) : _capacity{other._capacity}, _size{other._size}, str{new char[other._capacity]} {
@@ -42,17 +43,13 @@ String::String (const char* array) {
     strcpy(str, array);
 }
 
-void String::push (char elem) {
-    if(_capacity-_size==1) {
+void String::push (const char& elem) {
+   if((_capacity-_size)==1) {
         _resize();
     }
-    char* newString=new char[_capacity];
-    strcpy(newString, str);
-    newString[_size]=elem;
-    newString[_size+1]=0;
-    _size++;
-    delete []str;
-    str=newString;
+    str[_size]=elem;
+    str[_size+1]=0;
+    size++;
 }
 
 size_t String::size () const {
@@ -103,16 +100,12 @@ void String::append (const String& appStr) {
     while(_capacity<=_size+appStr._size) {
         _resize();
     }
-    char* newString=new char[_capacity];
-    strcpy(newString, str);
-    strcat(newString, appStr.str);
+    strcat(str, appStr.str);
     _size+=appStr._size;
-    newString[_size]=0;
-    delete [] str;
-    str=newString;
+    str[_size]=0;
 }
 
-char* String::c_str () {
+const char* String::c_str () {
     char* charArray=new char[_size+1];
     strcpy(charArray, str);
     return charArray;
@@ -128,29 +121,26 @@ void String::shrink_to_fit () {
     }
 }
 
-void String::resize (const size_t n) {
-    _capacity=n*2;
-    char* smallerString=new char[_capacity];
-    for(size_t i=0;i<n;i++) {
-        smallerString[i]=str[i];
+void String::resize (const size_t& n) {
+    if(n<_size) {
+        _size=n;
+        str[_size]=0;
     }
-    smallerString[n]=0;
-    delete []str;
-    str=smallerString;
+    else {
+        while(_capacity<=n) {
+            _resize();
+        }
+    }
 }
 
-void String::resize (const size_t& n, char character) {
+void String::resize (const size_t& n, const char& character) {
     while(_capacity<=n) {
         _resize();
     }
-    char* biggerString=new char[_capacity];
-    strcpy(biggerString, str);
     while(_size<n) {
-        biggerString[_size++]=character;
+        str[_size++]=character;
     }
-    biggerString[_size]=0;
-    delete [] str;
-    str=biggerString;
+    str[_size]=0;
 }
 
 char& String::operator [] (const size_t& pos) { 
@@ -183,7 +173,6 @@ std::ostream& operator << (std::ostream& out, const String& s) {
 
 std::istream& operator >> (std::istream& in, String& s) {
     size_t i=0;
-    s.str=new char[i];
     char elem;
     in>>elem;
     while(elem!='\n' && elem!=' ') {
