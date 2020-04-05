@@ -5,39 +5,49 @@
 
 class String
 {
-    public:
     char *my_string;
     size_t my_size;
     size_t my_capacity;
 
-    String();                               // v
-    String(const char*, size_t);            // v
-    String(const String&);                  // v
-    ~String();                              // v
+  public:
 
-    void copy(const String&);                     // v
-    void delete_str();                            // v
-    void push(char);                              // v
-    size_t size() const;                          // v
-    size_t capacity() const;                      // v
-    bool empty() const;                           // v
-    char& at(int) const;                          // v
-    char& front() const;                          // v
-    char& back() const;                           // v
-    void append(const String&);                   // v
-    char* c_str() const;                          // v
-    void shrink_to_fit();                         // v
-    void resize(size_t);                          // v
-    void resize(size_t, char);                    // v
+    char* get_my_string() const;
 
-    String operator+ (const String&);             // v
-    String operator+= (const String&);            // v
-    String operator= (const String&);             // v
-    char& operator [] (int) const;                // v
-    operator bool() const;
+    friend std::ostream& operator<< (std::ostream&, const String&);
+    friend std::istream& operator>> (std::istream&, String&);
+
+    String();
+    String(const char*, size_t);
+    String(const String&);
+    ~String();
+
+    void copy(const String&);
+    void delete_str();
+    void push(char);
+    size_t size() const;
+    size_t capacity() const;
+    bool empty() const;
+    const char& at(int) const;
+    char& at(int);
+    const char& front() const;
+    char& front();
+    const char& back() const;
+    char& back();
+    void append(const String&);
+    const char* c_str() const;
+    void shrink_to_fit();
+    void resize(size_t);
+    void resize(size_t, char);
+
+    String operator+ (const String&) const;
+    String& operator+= (const String&);
+    String& operator= (const String&);
+    char& operator [] (int);
+    const char& operator [] (int) const;
+    explicit operator bool() const;
 
 };
-std::ostream& operator<< (std::ostream&, const String&);    // v
-std::istream& operator>> (std::istream&, String&);          // v
+std::ostream& operator<< (std::ostream&, const String&);
+std::istream& operator>> (std::istream&, String&);
 
 #endif
