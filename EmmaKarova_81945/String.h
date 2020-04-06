@@ -16,7 +16,7 @@ class String
     friend std::istream& operator >> (std::istream& in,String& input);
     friend std::ostream& operator << (std::ostream& out,const String& el);
     String();
-    String(const size_t& setCap,const char* init_str);
+    String(const char* init_str);
     String(const String& other);
     String& operator = (const String& other);
     ~String();
@@ -39,6 +39,6 @@ class String
     String& operator += (const String& other);
     char& operator [](size_t pos);
     const char& operator [](size_t pos) const;
-    operator bool() const;
+    explicit operator bool() const;
 };
 #endif

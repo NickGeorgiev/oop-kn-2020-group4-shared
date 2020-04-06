@@ -23,25 +23,18 @@ void String::relocate(size_t cap)
 {
     _capacity = cap;
     char* new_str = new char[_capacity];
+    _size = strlen(str);
     strcpy(new_str,str);
     delete [] str;
     str = new_str;
 }
 
-
 String::String():str(nullptr),_size(0),_capacity(0) {}
 
-String::String(const size_t& setCap,const char* init_str):_size(strlen(init_str)), _capacity(setCap)
+String::String(const char* init_str): _size(strlen(init_str)),_capacity(strlen(init_str) + 1)
 {
-    if(_capacity == 0 || _capacity <= _size)
-    {
-        str = nullptr;
-    }
-    else
-    {
-        str = new char[_capacity];
-        strcpy(this->str,init_str);
-    }
+    this->str = new char[_capacity];
+    strcpy(this->str,init_str);
 }
    
 String::String(const String& other)
@@ -78,31 +71,22 @@ void String::push(const char& element)
 {
     if(_size + 1 < _capacity)
     {
-        char* new_str = new char[_size+1];
-        strcpy(new_str,this->str);
-        new_str[_size] = element;
-        new_str[_size+1] = 0;
-        _size++; 
-        delete [] str;
-        str = new_str;
+        _size++;
+        str[_size-1] = element;
+        str[_size] = 0;
     }
     else
     {
         relocate(_size+2);
-        char* new_str = new char[_size+1];
-        strcpy(new_str,this->str);
-        new_str[_size] = element;
-        new_str[_size+1] = 0;
-        _size++; 
-        delete [] str;
-        str = new_str;
+        _size++;
+        str[_size-1] = element;
+        str[_size] = 0;
     }
 }
 
 bool String::empty() const
 {
-    if(_size == 0) return true;
-    else return false;
+    return _size == 0;
 }
 
 char& String::at(const size_t& pos)
@@ -141,30 +125,23 @@ String& String::append(const String& _str)
 {
     if(_size + _str.size() + 1 <= _capacity)
     {
-        char* new_str = new char[_size + strlen(str)];
-        strcpy(new_str,this->str);
-        strcpy(new_str + this->_size,_str.str);
+        strcat(this->str,_str.str);
         this->_size += _str.size();
-        delete [] this->str;
-        str = new_str;
         return *this;
     }
     else
     {
         relocate(_size + _str.size() + 1);
-        char* new_str = new char[_size + strlen(str)];
-        strcpy(new_str,this->str);
-        strcpy(new_str + this->_size,_str.str);
+        strcat(this->str,_str.str);
         this->_size += _str.size();
-        delete [] this->str;
-        str = new_str;
         return *this;
+        
     } 
 }
 
 const char* String::c_str() const
 {
-    char* copy = new char[_capacity];
+    char* copy = new char[_size + 1];
     strcpy(copy,this->str);
     return copy;
 }
@@ -176,31 +153,17 @@ void String::shrink_to_fit()
  
 void String::resize(size_t n)
 {
-    if(n <= _size)
+    if(n < _capacity)
     {
         _size = n;
         str[_size] = 0;
     }
-    else if(n > _capacity)
+    else if(n >= _capacity)
     {
         relocate(n+1);
-        for(size_t i = _size; i < n; i++)
-        {
-            str[i] = ' ';
-        }
         _size = n;
         str[_size] = 0;
     }
-    else
-    {
-        for(size_t i = _size; i < n; i++)
-        {
-            str[i] = ' ';
-        }
-        _size = n;
-        str[_size] = 0;
-    }
-    
 }
 
 void String::resize(size_t n,char character)
@@ -233,10 +196,8 @@ void String::resize(size_t n,char character)
 
 String String::operator + (const String& other)
 {
-    assert(_size + other._size < _capacity);
     String result(*this); 
-    result._size += other._size;
-    strcat(result.str,other.str);
+    result += other;
     return result;  
 }
 
