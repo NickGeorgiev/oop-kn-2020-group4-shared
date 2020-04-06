@@ -36,6 +36,6 @@ class Course {
     // Private methods
     void copy(const Teacher&, const Student* const);
     void copyDynamicMemory(const Student* const);
-    void free();
+    void freeMemory();
 };
 #endif

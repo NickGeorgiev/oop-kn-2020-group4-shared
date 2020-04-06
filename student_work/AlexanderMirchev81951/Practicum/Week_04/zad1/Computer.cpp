@@ -12,10 +12,10 @@ Computer::Computer(const Computer& computer):
         Computer(computer.brand, computer.processor, computer.video, 
             computer.hard_drive, computer.price, computer.quantity) {}
 Computer::~Computer() {
-    free();
+    freeMemory();
 }
 Computer& Computer::operator=(const Computer& computer) {
-    free();
+    freeMemory();
     copy(computer.brand, computer.processor, computer.video, 
         computer.hard_drive, computer.price, computer.quantity);
     return (*this);
@@ -44,18 +44,18 @@ void Computer::copy(const char* const brand, const char* const processor,
                 this->processor = new char[strlen(processor) + 1];
                 this->video = new char[strlen(video) + 1];
                 this->hard_drive = new char[strlen(hard_drive) + 1];
-                copyDymanicMemory(brand, processor, video, hard_drive);
+                copyDynamicMemory(brand, processor, video, hard_drive);
                 this->price = price;
                 this->quantity = quantity;
         }
-void Computer::copyDymanicMemory(const char* const brand, const char* const processor, 
+void Computer::copyDynamicMemory(const char* const brand, const char* const processor, 
             const char* const video, const char* const hard_drive) {
             strcpy(this->brand, brand);
             strcpy(this->processor, processor);
             strcpy(this->video, video);
             strcpy(this->hard_drive,hard_drive);
         }
-void Computer::free() {
+void Computer::freeMemory() {
     delete[] hard_drive;
     delete[] video;
     delete[] processor;

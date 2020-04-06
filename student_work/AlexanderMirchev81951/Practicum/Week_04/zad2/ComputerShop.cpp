@@ -10,7 +10,7 @@ ComputerShop::ComputerShop(const char* const name, const Computer* const compute
 ComputerShop::ComputerShop(const ComputerShop& computer): 
     ComputerShop(computer.name, computer.computers, computer.numberOfComputers) {}
 ComputerShop::~ComputerShop() {
-    free();
+    freeMemory();
 }
 
 void ComputerShop::addComputer(const Computer& computer) {
@@ -76,7 +76,7 @@ void ComputerShop::copy(const char* const name, const Computer* const computers,
     }
     this->numberOfComputers = size;
 }
-void ComputerShop::free() {
+void ComputerShop::freeMemory() {
     delete[] name;
     delete[] computers;
 }

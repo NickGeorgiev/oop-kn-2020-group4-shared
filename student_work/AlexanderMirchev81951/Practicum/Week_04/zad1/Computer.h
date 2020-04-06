@@ -30,8 +30,8 @@ class Computer {
     void copy(const char* const brand, const char* const processor, 
             const char* const video, const char* const hard_drive, 
             const double& price, const unsigned int& quantity);    
-    void copyDymanicMemory(const char* const brand, const char* const processor, 
+    void copyDynamicMemory(const char* const brand, const char* const processor, 
             const char* const video, const char* const hard_drive);
-    void free();
+    void freeMemory();
 };
 #endif

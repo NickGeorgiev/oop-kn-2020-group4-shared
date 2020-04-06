@@ -52,7 +52,7 @@ double Student::averageGrade() const {
     for (size_t i = 0; i < this->numberOfGrades; i++) {
         sum += this->grades[i];
     }
-    return sum / numberOfGrades;
+    return (double) sum / numberOfGrades;
 }
 
 // Private methods

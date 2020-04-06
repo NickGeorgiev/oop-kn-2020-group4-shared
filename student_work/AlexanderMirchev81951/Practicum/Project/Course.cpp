@@ -13,7 +13,7 @@ Course::Course(const Teacher& teacher, const Student* const students, const size
 Course::Course(): Course(Teacher(), nullptr, 0) { }
 Course::Course(const Course& course): Course(course.teacher, course.students, course.numberOfStudents) {}
 Course:: ~Course() {
-    free();
+    freeMemory();
 }
 
 // Operators
@@ -45,7 +45,7 @@ void Course::addStudent(const Student& student) {
     }
     newStudents[numberOfStudents] = student;
     numberOfStudents++;
-    free();
+    freeMemory();
     this->students = newStudents;
 }
 void Course::assignTeacher(const Teacher& teacher) {
@@ -72,6 +72,6 @@ void Course::copyDynamicMemory(const Student* const students) {
         this->students[i] = students[i];
     }    
 }
-void Course::free() {
+void Course::freeMemory() {
     delete[] students;
 }

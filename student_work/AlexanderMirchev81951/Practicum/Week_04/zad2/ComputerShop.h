@@ -21,6 +21,6 @@ class ComputerShop{
 
     const int getComputerPositionByBrand(const char* const brandName) const;
     void copy(const char* const, const Computer* const, const size_t&);
-    void free();
+    void freeMemory();
 };
 #endif
