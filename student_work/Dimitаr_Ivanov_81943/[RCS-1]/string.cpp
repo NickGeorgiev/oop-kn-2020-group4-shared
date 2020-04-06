@@ -106,15 +106,12 @@ void String::back (const char& answer) {
     change_character(answer, _size - 1);
 }
 void String::append (const String& str) {
-    if (_size + str._size + 1 > _capacity) {
-        resize(_size + str._size);
-    }
+    size_t old_size = _size;
+    resize(_size + str._size);
 
-    for (int i = 0; i < str._size; i++ ) {
-        array[_size + i] = str.array[i];
+    for (int i = 0; i < str._size; i++) {
+        array[old_size + i] = str.array[i];
     }
-    array[_size + str._size + 1] = '\0';
-    _size = _size + str._size + 1;
 }
 char* String::c_str() {
     char * char_array = new char[_size + 1];
@@ -133,7 +130,7 @@ void String::resize (const size_t& n) {
     _capacity = 2*n + 1;
     char* new_array = new char[_capacity];
 
-    for (int i = 0; i < _size; i ++) {
+    for (int i = 0; i < _size; i++) {
         new_array[i] = array[i];
     }
 
@@ -144,11 +141,13 @@ void String::resize (const size_t& n) {
     array = new_array;
 }
 void String::resize (const size_t& n, const char& character) { // needs testing
+    size_t old_size = _size;
+    
     if (n > _size) {
         resize(n);
     }
 
-    for (int i = _size; i < n; i++) {
+    for (int i = old_size; i < n; i++) {
         array[i] = character;
     }
     _size = n;
