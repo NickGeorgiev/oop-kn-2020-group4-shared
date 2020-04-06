@@ -40,6 +40,6 @@ class Student {
     void copy(const char* const firstName, const char* const lastName, const int facNum, 
             const int* const grades, const size_t& numberOfGrades);
     void copyDynamicMemory(const char* const firstName, const char* const lastName, const int* const grades);
-    void free();
+    void freeMemory();
 };
 #endif

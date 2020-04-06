@@ -36,7 +36,7 @@ class Teacher {
 
     void copy(const char* const firstName, const char* const lastName, const int classNum);
     void copyDynamicMemory(const char* const firstName, const char* const lastName);
-    void free();
+    void freeMemory();
 
 };
 #endif

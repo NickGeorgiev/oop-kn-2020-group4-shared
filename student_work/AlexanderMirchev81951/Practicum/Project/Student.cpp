@@ -15,13 +15,13 @@ Student::Student():
 Student::Student(const Student& student): 
         Student(student.firstName, student.lastName, student.facNumber, student.grades, student.numberOfGrades) {}
 Student::~Student() {
-    free();
+    freeMemory();
 }
 
 // Operators
 
 void Student::operator= (const Student& student) {
-    free();
+    freeMemory();
     copy(student.firstName, student.lastName, student.facNumber, student.grades, student.numberOfGrades);    
 }
 std::ostream& operator << (std::ostream &out, const Student& student) {
@@ -66,7 +66,7 @@ void Student::copy(const char* const firstName, const char* const lastName, cons
     this->numberOfGrades = numberOfGrades;
     copyDynamicMemory(firstName, lastName, grades);
 }
-void Student::free() {
+void Student::freeMemory() {
     delete[] firstName;
     delete[] lastName;
     delete[] grades;

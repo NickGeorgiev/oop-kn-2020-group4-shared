@@ -10,13 +10,13 @@ Teacher::Teacher (const char* const firstName, const char* const lastName, const
 Teacher::Teacher (): Teacher("", "", 0) {}
 Teacher::Teacher (const Teacher& teacher): Teacher(teacher.firstName, teacher.lastName, teacher.classNum) {}
 Teacher::~Teacher () {
-    free();
+    freeMemory();
 }
 
 // Operators
 
 void Teacher::operator = (const Teacher& teacher) {
-    free();
+    freeMemory();
     copy(teacher.firstName, teacher.lastName, teacher.classNum);
 }
 std::ostream& operator << (std::ostream &out, const Teacher& teacher) {
@@ -47,7 +47,7 @@ void Teacher::copyDynamicMemory(const char* const firstName, const char* const l
     strcpy(this->firstName, firstName);
     strcpy(this->lastName, lastName);
 }
-void Teacher::free() {
+void Teacher::freeMemory() {
     delete[] firstName;
     delete[] lastName;
 }
