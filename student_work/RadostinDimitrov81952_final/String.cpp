@@ -13,36 +13,34 @@ int powerOfTwo(int a)
     return power;
 }
 
-void String::enlarge()
+void String::enlarge(int newsize)
 {
-  
+    _size=newsize;
     if (_capacity > _size+1)
     {
-  
         return;
     }
-
     while (_capacity <= _size+1)
     {
         _capacity = _capacity * 2;
     }
- 
     changecap(_capacity);
-
 }
-void String::changecap(int _capacity2)
+
+void String::changecap(int newcapacity)
 {
-    if (_capacity2 == 0)
+    if (newcapacity == 0)
     {
         nullString();
         return;
     }
-    _capacity = _capacity2;
+    _capacity = newcapacity;
     char *_data2 = new char[_capacity];
-    for (int i = 0; i < _size; i++)
-    {
-        _data2[i] = _data[i];
-    }
+    strcpy(_data2,_data);
+    // for (int i = 0; i < _size; i++)
+    // {
+    //     _data2[i] = _data[i];
+    // }
     if (_data != nullptr)
     {
         delete[] _data;
@@ -81,9 +79,9 @@ String::String(const char *array)
 String::String(const String &other)
 {
     nullString();
-    coppy(other);
+    copy(other);
 }
-void String::coppy(const String& a){
+void String::copy(const String& a){
      _size = a._size;
     changecap(a._capacity);
     for (int i = 0; i <_size; i++)
@@ -144,8 +142,7 @@ void String::print() const
 }
 void String::push(const char& x)
 {
-    _size++;
-    enlarge();
+    enlarge(_size+1);
     _data[_size - 1] = x;
     _data[_size]='\0';
 }
@@ -175,8 +172,7 @@ void String::printcanonic() const
 void String::append(const char* array)
 {
     int size2 = strlen(array);
-    _size = _size + size2;
-    enlarge();
+    enlarge(_size+size2);
     for (int i = 0; i < size2; i++)
     {
         _data[_size + i - size2] = array[i];
@@ -199,17 +195,13 @@ void String::shrink_to_fit()
 }
 void String::resize(int x)
 {
-    _size = x;
-    enlarge();
+    enlarge(x);
     _data[_size]='\0';
 }
 void String::resize(const int& newSize, const char& filler)
 {
-    
     int oldsize = _size;
-    
     resize(newSize);
-    
     for (int i = oldsize; i < newSize; i++)
     {
         _data[i] = filler;
@@ -233,7 +225,7 @@ void String::operator+=(const String &a)
 }
 String String::operator=(const String &a)
 {
-    coppy(a);
+    copy(a);
     return a;
     //return(*this);
 }
@@ -261,7 +253,7 @@ std::istream &operator>>(std::istream &input, String &a)
     // a.resize(a._size - 1);
     // return input;
     a.resize(0);
-    char b='#';
+    char b;
     while(input>>b){
         a.push(b);
     }

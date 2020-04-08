@@ -7,10 +7,10 @@ class String
     char *_data;
     int _size;
     int _capacity;
-    void enlarge();
-    void changecap(int _capacity2);
+    void enlarge(int);
+    void changecap(int newcapacity);
     void nullString();
-    void coppy(const String& a);
+    void copy(const String& a);
 public:
     String();
     String(const char* a);

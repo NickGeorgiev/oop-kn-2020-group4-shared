@@ -21,7 +21,14 @@ TEST_CASE("operator ="){
     CHECK(strcmp(b.c_str(),a.c_str())==0);
     CHECK(strcmp(c.c_str(),a.c_str())==0);
 }
-TEST_CASE("append&&c_str"){
+TEST_CASE("c_str"){
+    String a("abc");
+    CHECK(strcmp(a.c_str(),"abc")==0);
+    CHECK(a[0]=='a');
+    CHECK(a[1]=='b');
+    CHECK(a[2]=='c');
+}
+TEST_CASE("append"){
     String a("abc");
     a.append("qwe");
     CHECK(strcmp(a.c_str(),"abcqwe")==0);
@@ -110,7 +117,7 @@ TEST_CASE("operator >>"){
     // std::cin>>a; // трябва да се въведе input
     // CHECK(strcmp(a.c_str(),"input")==0);
     std::istringstream in("input");
-    String a;
+    String a("asd");
     in >> a;
     CHECK(strcmp(a.c_str(),"input")==0);
 }
@@ -124,8 +131,6 @@ TEST_CASE("operator bool"){
     String a("booltest");
     CHECK(bool(a)==0);
 }
-
-
 
 int main(){
     doctest::Context().run();
