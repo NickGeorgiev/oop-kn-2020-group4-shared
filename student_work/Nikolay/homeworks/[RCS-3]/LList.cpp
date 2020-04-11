@@ -78,20 +78,16 @@ void LList<T>::insertElementAt(const size_t& index,const T& elem) {
 }
 
 template<class T>
-void LList<T>::rev(Node<T>* previous) {
+void LList<T>::reverse() {
 	if(start == end) {
 		return;
 	}
-	previous = start;
+	Node<T>* previous = start;
 	start = start->next;
 	previous->next = nullptr;
-	rev(previous);
+	reverse();
 	end->next = previous;
 	end = previous;
-}
-template<class T>
-void LList<T>::reverse() {
-	rev(nullptr);
 }
 
 //Тест:Не трябва да e тука ,ама ми даваше някакви undefined reference и не можах да ги линкна ,като го сложих в друг файл

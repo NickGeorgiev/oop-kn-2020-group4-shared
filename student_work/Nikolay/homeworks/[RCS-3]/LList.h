@@ -16,7 +16,6 @@ class LList {
 
 	void copy(const LList<T>&);
 	void destroy();
-	void rev(Node<T>*);
 
 	public:
 	LList();
