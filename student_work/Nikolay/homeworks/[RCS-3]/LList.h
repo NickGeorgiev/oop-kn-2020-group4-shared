@@ -23,9 +23,12 @@ class LList {
 	LList& operator=(const LList<T>&);
 	~LList();
 	void print();
+	bool empty() const;
+	size_t getSize() const;
 	void toEnd(const T&);
 	void toStart(const T&);
 	void insertElementAt(const size_t&,const T&);
+	T getElementAt(const size_t&) const;
 	void reverse();
 };
 #endif

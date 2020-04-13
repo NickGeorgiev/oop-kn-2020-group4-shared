@@ -66,6 +66,27 @@ void LList<T>::print() {
 }
 
 template<class T>
+bool LList<T>::empty() const {
+	return !start;
+}
+
+template<class T>
+size_t LList<T>::getSize() const {
+	return size;
+}
+
+template<class T>
+void LList<T>::toStart(const T& elem) {
+	if(!start) {
+		start = end = new Node<T> (elem,start);
+	}
+	else{
+		start = new Node<T> (elem,start);
+	}
+	++size;
+}
+
+template<class T>
 void LList<T>::insertElementAt(const size_t& index,const T& elem) {
 	assert(index < size);
 	size_t currIndex = 0;
@@ -75,6 +96,19 @@ void LList<T>::insertElementAt(const size_t& index,const T& elem) {
 		current = current->next;
 	}
 	current->next = new Node<T> (elem,current->next);
+	++size;
+}
+
+template<class T>
+T LList<T>::getElementAt(const size_t& index) const {
+	size_t currIndex = 0;
+	Node<T>* current = start;
+	while(currIndex != index && current) {
+		++currIndex;
+		current = current->next;
+	}
+	T result = current->elem;
+	return result;
 }
 
 template<class T>
@@ -88,21 +122,4 @@ void LList<T>::reverse() {
 	reverse();
 	end->next = previous;
 	end = previous;
-}
-
-//Тест:Не трябва да e тука ,ама ми даваше някакви undefined reference и не можах да ги линкна ,като го сложих в друг файл
-
-void test() {
-	LList<int> list;
-	list.toEnd(1);
-	list.toEnd(2);
-	list.toEnd(3);
-	list.toEnd(4);
-	list.toEnd(5);
-	list.reverse();
-	list.print();
-}
-
-int main(){
-	test();
 }
