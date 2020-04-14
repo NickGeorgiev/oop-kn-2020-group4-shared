@@ -1,14 +1,11 @@
-// create doctests
-// test all
-
-// upload to directory
-
-
-
 #include <iostream>
 #include <cstring>
 #include <cassert>
 #include "string.h"
+
+char* String::get_my_string() const{
+    return my_string;
+}
 
 void String::copy(const String& other){
     this->my_size = other.my_size;
@@ -49,7 +46,7 @@ void String::push(char c){
         resize(my_capacity + 1);
     }
     my_string[my_size] = c;
-    my_size++;
+    my_string[++my_size] = 0;
 }
 
 size_t String::size() const{
@@ -64,28 +61,41 @@ bool String::empty() const{
     return (my_size == 0);
 }
 
-char& String::at(int pos) const{
+const char& String::at(int pos) const{
     return my_string[pos-1];
 }
 
-char& String::front() const{
+char& String::at(int pos) {
+    return my_string[pos-1];
+}
+
+const char& String::front() const{
     return my_string[0];
 }
 
-char& String::back() const{
+char& String::front(){
+    return my_string[0];
+}
+
+const char& String::back() const{
+    return my_string[my_size - 1];
+}
+
+char& String::back(){
     return my_string[my_size - 1];
 }
 
 void String::append(const String& str){
+    if(this->my_capacity < (strlen(this->my_string) + strlen(str.my_string))){
+        this->resize(this->my_size + str.my_size);
+    }
     strcat(this->my_string, str.my_string);
-    this->my_size += str.my_size;
     this->my_capacity += str.my_capacity;
 }
 
-char* String::c_str() const{
+const char* String::c_str() const{
     char *str = new char[my_size];
     strcpy(str, my_string);
-    str[my_size] = 0;
 
     return str;
 }
@@ -104,7 +114,8 @@ void String::resize(size_t n){
     strcpy(new_string, my_string);
     delete[] my_string;
     my_string = new_string;
-    my_string[my_capacity - 1] = 0;
+
+    my_size = strlen(my_string);
 }
 
 void String::resize(size_t n, char c){
@@ -116,24 +127,23 @@ void String::resize(size_t n, char c){
     }
 }
 
-String String::operator+= (const String& str){
+String& String::operator+= (const String& str){
     append(str);
     return *this;
 }
 
-String String::operator+ (const String& str){
+String String::operator+ (const String& str) const {
     String result;
-
+    
     result.my_size = this->my_size + str.my_size;
-    result.my_capacity = this->my_capacity + str.my_capacity;
-    int size_ = result.my_capacity;
-    result.my_string = new char[size_];
+    result.my_capacity = this->my_capacity + str.my_capacity - 1;
+    result.my_string = new char[result.my_capacity];
     result.my_string = strcat(this->my_string, str.my_string);
 
     return result;
 }
 
-String String::operator= (const String& str){
+String& String::operator= (const String& str){
     if(this != &str){
         delete_str();
         copy(str);
@@ -141,7 +151,11 @@ String String::operator= (const String& str){
     return *this;
 }
 
-char& String::operator[] (const int pos) const{
+const char& String::operator[] (int pos) const{
+    return my_string[pos - 1];
+}
+
+char& String::operator[] (int pos){
     return my_string[pos - 1];
 }
 
