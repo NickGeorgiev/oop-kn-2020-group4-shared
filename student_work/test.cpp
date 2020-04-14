@@ -8,7 +8,7 @@ TEST_CASE ("Constructors test")
 {
     SUBCASE("Testing default constructor")
     {
-        String initialTest;
+        String test;
 
         CHECK(test.size() == 0);
         CHECK(test.capacity() == 0);
