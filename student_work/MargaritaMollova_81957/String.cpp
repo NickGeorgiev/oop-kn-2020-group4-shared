@@ -91,6 +91,11 @@ String::operator bool () const
     return this->empty();
 }
 
+bool String::operator == (const String& other)
+{
+    return !strcmp(myString, other.myString);
+}
+
 
 void String::push (const char& element)
 {
