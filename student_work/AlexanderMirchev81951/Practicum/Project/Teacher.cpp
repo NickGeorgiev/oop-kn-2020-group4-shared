@@ -3,22 +3,36 @@
 #include "Teacher.h"
 
 
-Teacher::Teacher (const char* const firstName, const char* const lastName, const int classNum):
-        firstName{new char[strlen(firstName) + 1]}, lastName{new char[strlen(lastName) + 1]}, classNum{classNum} {
-    copyDynamicMemory(firstName, lastName);
+Teacher::Teacher (const char* const firstName, const char* const lastName, const int classNum) {
+    copy(firstName, lastName, classNum);
 }
-Teacher::Teacher (): Teacher("", "", 0) {}
-Teacher::Teacher (const Teacher& teacher): Teacher(teacher.firstName, teacher.lastName, teacher.classNum) {}
+Teacher::Teacher(): Teacher("", "", 0) {}
+Teacher::Teacher (const Teacher& other) {
+    copy(other);
+}
 Teacher::~Teacher () {
     freeMemory();
 }
-
-// Operators
-
-void Teacher::operator = (const Teacher& teacher) {
-    freeMemory();
-    copy(teacher.firstName, teacher.lastName, teacher.classNum);
+Teacher& Teacher::operator= (const Teacher& other) {
+    if(&other != this) {
+        freeMemory();
+        copy(other);
+    }
+    return *this;
 }
+Teacher::Teacher(Teacher&& other) {
+    copy(other);
+    other.freeMemory();
+}
+Teacher& Teacher::operator= (Teacher&& other) {
+    if(&other != this) {
+        freeMemory();
+        copy(other);
+    }
+    other.freeMemory();
+    return *this;
+}
+
 std::ostream& operator << (std::ostream &out, const Teacher& teacher) {
     out << teacher.firstName << " " << teacher.lastName << " " << teacher.classNum << "\n";    
     return out;
@@ -28,26 +42,23 @@ std::istream& operator >> (std::istream &in, Teacher& teacher) {
     return in;
 }
 
-// // Friend methods
-
-// bool compareTeachersFirstName(const Teacher& teacher1, const Teacher& teacher2) {
-//     return strcmp(teacher1.firstName, teacher2.firstName) > 0 ;
-// }
-
 // Private methods
 
 void Teacher::copy(const char* const firstName, const char* const lastName, const int classNum) {
     this->firstName = new char[strlen(firstName) + 1];
-    this->lastName = new char[strlen(lastName) + 1];
-    this->classNum = classNum;
-    copyDynamicMemory(firstName, lastName);
-}
-
-void Teacher::copyDynamicMemory(const char* const firstName, const char* const lastName) {
     strcpy(this->firstName, firstName);
+    this->lastName = new char[strlen(lastName) + 1];
     strcpy(this->lastName, lastName);
+    this->classNum = classNum;
+}
+void Teacher::copy(const Teacher& other) {
+    copy(other.firstName, other.lastName, other.classNum);
 }
 void Teacher::freeMemory() {
-    delete[] firstName;
-    delete[] lastName;
+    if(firstName != nullptr) {
+        delete[] firstName;
+    }
+    if(lastName != nullptr) {
+        delete[] lastName;
+    }
 }
