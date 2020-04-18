@@ -72,6 +72,19 @@ public:
         return *this;
     }
 
+    const T& operator[](const int pos) const {
+        assert(pos < size);
+        if(pos == 0) return this->start->elem;
+        if(pos == size-1) return this->end->elem;
+
+        Node<T>* current = this->start;
+        for (size_t i = 0; i < pos; i++)
+        {
+            current = current->next;
+        }
+        return current->elem;
+    }
+
     const size_t& getSize() const {
         return this->size;
     }
@@ -147,6 +160,14 @@ public:
         this->end = current;
         size --;
 
+        return res;
+    }
+    LList<T> reverse() const {
+        LList<T> res;
+        for (int i = size - 1 ; i >= 0; --i)
+        {
+            res.toEnd(operator[](i));
+        }
         return res;
     }
 };
