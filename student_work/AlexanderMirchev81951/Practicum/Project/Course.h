@@ -15,9 +15,12 @@ class Course {
     // Constructors
 
     Course();
-    Course(const Teacher&, const Student* const, const size_t);
+    Course(const Teacher&, const Student* const, const size_t&);
     Course(const Course&);
     ~Course();
+    Course& operator= (const Course&);
+    Course(Course&&);
+    Course& operator= (Course&&);
 
     // Operators
 
@@ -34,8 +37,8 @@ class Course {
     private:
 
     // Private methods
-    void copy(const Teacher&, const Student* const);
-    void copyDynamicMemory(const Student* const);
+    void copy(const Teacher&, const Student* const, const size_t&);
+    void copy(const Course&);
     void freeMemory();
 };
 #endif

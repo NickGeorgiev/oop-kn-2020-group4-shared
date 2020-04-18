@@ -6,14 +6,31 @@
 
 // Constructors
 
-Course::Course(const Teacher& teacher, const Student* const students, const size_t size): 
-        teacher{teacher}, numberOfStudents{size}, students{new Student[size]} {
-    copyDynamicMemory(students);
+Course::Course(const Teacher& teacher, const Student* const students, const size_t& size) {
+    copy(teacher, students, size);
 }
 Course::Course(): Course(Teacher(), nullptr, 0) { }
-Course::Course(const Course& course): Course(course.teacher, course.students, course.numberOfStudents) {}
+Course::Course(const Course& other) {
+    copy(other);
+}
 Course:: ~Course() {
     freeMemory();
+}
+
+Course& Course::operator= (const Course& other) {
+    freeMemory();
+    copy(other);
+    return *this;
+}
+Course::Course(Course&& other) {
+    copy(other);
+    other.freeMemory();
+}
+Course& Course::operator= (Course&& other) {
+    freeMemory();
+    copy(other);
+    other.freeMemory();
+    return *this;
 }
 
 // Operators
@@ -66,11 +83,17 @@ void Course::deserialize(const char* const sourceFile) {
 
 // Private methods
 
-void Course::copyDynamicMemory(const Student* const students) {
+void Course::copy(const Teacher& teacher, const Student* const students, const size_t& numberOfStudents) {
+    this->teacher = teacher;
+    this->numberOfStudents = numberOfStudents;
+    this->students = new Student[numberOfStudents];
     for (size_t i = 0; i < numberOfStudents; i++)
     {
         this->students[i] = students[i];
-    }    
+    }  
+}
+void Course::copy(const Course& other) {
+    copy(other.teacher, other.students, other.numberOfStudents);
 }
 void Course::freeMemory() {
     delete[] students;
