@@ -2,7 +2,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT
 #include <iostream>
 #include "llist.h"
-//#include "reverse2.cpp"
 #include "doctest.h"
 Element* reverse2(Element* _start){
     Element *current=_start;
