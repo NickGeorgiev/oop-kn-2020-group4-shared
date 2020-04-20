@@ -100,7 +100,7 @@ Node<T>* LList<T>::getStart () const {
 
 template<class T>
 void LList<T>::reverse() {
-    if (size == 0) {
+    if (size == 0 || size == 1) {
         return;
     }
 
