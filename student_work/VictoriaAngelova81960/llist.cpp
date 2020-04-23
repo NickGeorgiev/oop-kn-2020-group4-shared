@@ -53,9 +53,6 @@ LList<T>& LList<T>::operator = (const LList& other) {
         destroyList();
         copyList();
     }
-    LList tmp(other);
-    swapList(tmp);
-    return *this;
 }
 
 template<class T>
