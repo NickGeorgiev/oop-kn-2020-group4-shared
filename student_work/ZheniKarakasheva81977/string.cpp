@@ -10,17 +10,22 @@
 //Assisting functions for the cannonical representation:
 
 void String::copy(const String& other) {
-
     sizeString = other.sizeString;
     capacityString = other.capacityString;
 
-    data = new char[capacityString]; 
-    strcpy(data, other.data);
+    data = new (std::nothrow) char[capacityString]; 
+
+    if(data == nullptr) {
+        sizeString = 0;
+        capacityString = 0;
+        data[sizeString] = '\0';
+    } else {
+        strcpy(data, other.data);
+    }
 }
 
 
 void String::deleteString() {
-
     delete [] data;
     data = nullptr;
 
@@ -32,25 +37,20 @@ void String::deleteString() {
 
 String::String(): data(nullptr), sizeString(0), capacityString(0) {}
 
-String::String(const char* other, size_t otherCapacity): sizeString(strlen(other)), capacityString(otherCapacity) {
-
-    if (otherCapacity <= sizeString || otherCapacity == 0) {
+String::String(const char* other): sizeString(strlen(other)), capacityString(sizeString+1) {
+    if (sizeString == 0) {
         data = nullptr;
-
     } else {
-
-        data = new char[otherCapacity];
+        data = new char[capacityString];
         strcpy(data, other);
     }
 }
  
 String::String(const String& other) {
-
     copy(other); 
 }
 
 String& String::operator = (const String& other) {
-
     if(this != &other) {
         deleteString();
         copy(other);
@@ -60,14 +60,12 @@ String& String::operator = (const String& other) {
 }
 
 String::~String() {
-
     deleteString();
 }
     
 
 //Methods
 void String::push(char element) {
-
     if(capacityString > sizeString + 1) {
         char* newData = new char[sizeString+1];
         strcpy(newData,data);
@@ -97,45 +95,52 @@ void String::push(char element) {
     
 
 size_t String::size() const{
-
     return sizeString;
 } 
 
     
 size_t String::capacity() const{
-
     return capacityString;
 }
 
 bool String::empty() const{
-
-    return sizeString == 0 || capacityString == 0;
+    return sizeString == 0;
 }
 
    
 
-char& String::at(const size_t& pos) const{
-
+char& String::at(const size_t& pos) {
     assert(pos >= 0 && pos < sizeString && !empty());
 
     return data[pos];
 }
     
 
-char& String::front() const{
-
+char& String::front() {
     return at(0);
 }
     
-char& String::back() const{
-
+char& String::back() {
     return at(sizeString-1);
+}
+
+const char& String::at(const size_t& pos) const{
+    assert(pos >= 0 && pos < sizeString && !empty());
+
+    return data[pos];
+}; 
+
+const char& String::front() const{
+    return at(0);
+}
+
+const char& String::back() const{
+    return at(0);
 }
    
 void String::append(const String& addEnd) {
-
     if (capacityString < sizeString + addEnd.sizeString) {
-        capacityString = 3 * (sizeString + addEnd.sizeString);
+        resize((sizeString+addEnd.sizeString)*3);
     }
         
     for(int i = 0; i < addEnd.sizeString; i++) {
@@ -147,8 +152,7 @@ void String::append(const String& addEnd) {
 }
       
 
-char* String::c_str() const {
-
+const char* String::c_str() const {
     char* newData = new char[sizeString + 1];
     strcpy(newData,data);
 
@@ -156,12 +160,10 @@ char* String::c_str() const {
 }  
 
 void String::shrink_to_fit() {
-
     resize(sizeString+1); 
 }
 
 void String::resize(size_t n) {
-
     if (n < sizeString + 1) {
         sizeString = n;
     }
@@ -171,11 +173,9 @@ void String::resize(size_t n) {
     strcpy(newData, data);
     delete[] data;
     data = newData;
-    data[sizeString] = '\0';
 }
     
 void String::resize(size_t n, char character) {
-
     if(n >= capacityString) {
         resize(3*n);
     }
@@ -189,7 +189,6 @@ void String::resize(size_t n, char character) {
 
 //Operators
 String String::operator +(const String& other) {
-
     String result(*this);
     result.append(other);
 
@@ -197,29 +196,24 @@ String String::operator +(const String& other) {
 }
 
 String& String::operator += (const String& other) {
-
     this->append(other);
 
     return *this;
 }
 
 char& String::operator[] (size_t pos) {
-
-    return at(pos);
+    return data[pos];
 }
 
 const char String::operator[] (size_t pos) const {
-
-    return at(pos);
+    return data[pos];
 }
 
 String::operator bool() const {
-    
-    return sizeString == 0 || capacityString == 0;
+    return empty();
 }
 
 std::istream& operator >>(std::istream& in, String& element) {
-
     char limitedCharacters[256]; 
     std::cout<<"Enter a string with no more than 255 characters: ";
     in >> limitedCharacters;
@@ -235,27 +229,10 @@ std::istream& operator >>(std::istream& in, String& element) {
 
 
 std::ostream& operator <<(std::ostream& out, const String& element) {
-    
     if (element.sizeString != 0 || element.capacityString != 0) {
         out<< element.data; 
-
-    } else { 
-        out<< "empty string";
     }
-
     return out;
-}
-
-//Function to print empty()
-void returnEmpty(String& tested) {
-    
-    if (tested.empty() ) {
-        std::cout<<"The string is empty"<<std::endl;
-
-    } else {
-
-        std::cout<<"The string is not empty"<<std::endl;
-    }
 }
 
 #endif
