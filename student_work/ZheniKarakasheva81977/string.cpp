@@ -37,7 +37,7 @@ void String::deleteString() {
 
 String::String(): data(nullptr), sizeString(0), capacityString(0) {}
 
-String::String(const char* other): sizeString(strlen(other)), capacityString(sizeString+1) {
+String::String(const char* other): sizeString(strlen(other)), capacityString(sizeString*3) {
     if (sizeString == 0) {
         data = nullptr;
     } else {
