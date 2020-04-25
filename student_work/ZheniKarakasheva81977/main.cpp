@@ -11,8 +11,8 @@ int main() {
 //   String test3("Geschenk");
 //   String test4("girlanden");
 //   String test5("Geburtstag");
-//  String test6;
-//  String test7;
+//   String test6;
+//   String test7;
 //
 //   //test for c_str()
 //
@@ -21,7 +21,6 @@ int main() {
 //   std::cout<<test3.c_str()<<std::endl; //prints Geschenk
 //   std::cout<<test4.c_str()<<std::endl; //prints girlanden
 //   std::cout<<test5.c_str()<<std::endl; //prints Geburtstag
-  
 //   std::cout<<std::endl;
 //
 //   //test for size() 
@@ -36,7 +35,7 @@ int main() {
 // 
 //  std::cout<<"The capacities of the strings are: "<<std::endl;
 //  std::cout<<test.capacity()<<" "<<test2.capacity()<<" "<<test3.capacity()<<" "<<test4.capacity()<<" "<<test5.capacity()<<std::endl;
-//   //prints 12 11 9 10 11
+//   //prints 33 30 24 27 30
 //
 //   std::cout<<std::endl;
 //
@@ -104,7 +103,7 @@ int main() {
 //   test4.resize(50);
 //   test5.resize(50);
 //   std::cout<<test.capacity()<<" "<<test2.capacity()<<" "<<test3.capacity()<<" "<<test4.capacity()<<" "<<test5.capacity()<<std::endl;
-    //prints 50 50 50 50 50
+//    //prints 50 50 50 50 50
 // 
 //   std::cout<<std::endl;
 //
@@ -121,7 +120,7 @@ int main() {
 //   test5 = test + test6;
 //   std::cout<<test5<<std::endl; //prints gesundheit?Geschenk!
 //   std::cout<<test<<" "<<test2<<" "<<test3<<" "<<test4<<" "<<test5<<" "<<std::endl;
-  //prints gesundheit?Geschenk! Geschenk!girlanden? girlanden?Geburtstag! Geburtstag! gesundheit?Geschenk!
+//  //prints gesundheit?Geschenk! Geschenk!girlanden? girlanden?Geburtstag! Geburtstag! gesundheit?Geschenk!
 // 
 //  std::cout<<std::endl;
 //
@@ -143,7 +142,7 @@ int main() {
 //   std::cout<<test7<<std::endl; //will print test7
 //   std::cin>>test>>test2>>test3>>test4>>test5;
 //   std::cout<<test<<" "<<test2<<" "<<test3<<" "<<test4<<" "<<test5<<std::endl; //will print the new strings
-   //I've input Gut, gesundheit, Geschenk, girlanden and Geburtstag for my test
+//   //I've input Gut, gesundheit, Geschenk, girlanden and Geburtstag for my test
 //
 //   std::cout<<std::endl;
 //
@@ -157,7 +156,7 @@ int main() {
 //   test4 += test5;
 //   std::cout<<test4<<" "<<test5<<std::endl; //prints girlandenGeburtstag Geburtstag
 //   test5 += test6;
-//   std::cout<<test5<<" "<<test6<<std::endl; //prints Geburtstag empty string
+//   std::cout<<test5<<" "<<test6<<std::endl; //prints Geburtstag 
 //   std::cout<<test<<" "<<test2<<" "<<test3<<" "<<test4<<" "<<test5<<" "<<std::endl;
 //   //prints Gutgesundheit gesundheitGeschenk Geschenkgirlanden girlandenGeburtstag Geburtstag
 // 
@@ -182,14 +181,14 @@ int main() {
 //   test.append(test2);
 //   std::cout<<"First: "<<test<<" Second: "<<test2<<std::endl; //prints First: GuDgesundheitgesundheitGeschenk Second: gesundheitGeschenk
 //   test.append(test3);
-//  std::cout<<"First: "<<test<<" Third: "<<test3<<std::endl; //prints First: GuDgesundheitgesundheitGeschenkGeschenkgirlanden Third: Geschenkgirlanden
+//   std::cout<<"First: "<<test<<" Third: "<<test3<<std::endl; //prints First: GuDgesundheitgesundheitGeschenkGeschenkgirlanden Third: Geschenkgirlanden
 // 
 //   test2.append(test4);
 //   std::cout<<"Second: "<<test2<<" Fourth: "<<test4<<std::endl; //prints Second: gesundheitGeschenkgirlandenGeburtstag Fourth: girlandenGeburtstag
 //   test3.append(test5);
-//   std::cout<<"Third: "<<test3<<" Fifth: "<<test5<<std::endl; //prints Third: denGeburtstag Fifth: Geburtstag
+//   std::cout<<"Third: "<<test3<<" Fifth: "<<test5<<std::endl; //prints Third: GeschenkgirlandenGeburtstag Fifth: Geburtstag
 //   test4.append(test6);
-//   std::cout<<"Fourth: "<<test4<<" Sixth: "<<test6<<std::endl; //prints Fourth: tag Sixth: empty string
-//
+//   std::cout<<"Fourth: "<<test4<<" Sixth: "<<test6<<std::endl; //prints Fourth:girlandenGeburtstag Sixth: 
+
 return 0; 
 }
