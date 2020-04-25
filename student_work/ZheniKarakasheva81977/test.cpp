@@ -16,21 +16,21 @@ TEST_CASE ("Constructors test")
 
     SUBCASE("Testing constructor with parameters")
     {
-        String test("geburtstag",20);
+        String test("katze");
 
-        CHECK(test.size() == 10);
-        CHECK(test.capacity() == 20);
-        CHECK(strcmp(test.c_str(),"geburtstag") == 0);
+        CHECK(test.size() == 5);
+        CHECK(test.capacity() == 15);
+        CHECK(strcmp(test.c_str(),"katze") == 0);
     }
 
     SUBCASE("Testing copy constructor")
     {
-        String test("geburtstag",20);
+        String test("katze");
         String newtest(test);
 
         CHECK(strcmp(newtest.c_str(),test.c_str()) == 0);
-        CHECK(newtest.size() == 10);
-        CHECK(newtest.capacity() == 20);
+        CHECK(newtest.size() == 5);
+        CHECK(newtest.capacity() == 15);
     }
 }
 
@@ -38,32 +38,32 @@ TEST_CASE("Methods test")
 {
     SUBCASE("Testing push()")
     {
-        String test("geburtstag",20);
+        String test("kinder");
         test.push('!');
 
-        CHECK(test.size() == 11);
-        CHECK(test.capacity() == 20);
-        CHECK(test[10] == '!');
+        CHECK(test.size() == 7);
+        CHECK(test.capacity() == 18);
+        CHECK(test[6] == '!');
     }
 
     SUBCASE("Testing size()")
     {
-        String test("geburtstag",20);
+        String test("geschenk");
 
-        CHECK(test.size() == 10);
+        CHECK(test.size() == 8);
     }
 
     SUBCASE("Testing capacity()")
     {
-        String test("geburtstag",20);
+        String test("hund");
 
-        CHECK(test.capacity() == 20);
+        CHECK(test.capacity() == 12);
     }
 
     SUBCASE("Testing empty()")
     {
         String initialTest;
-        String test("geburtstag",20);
+        String test("geburtstag");
 
         CHECK(initialTest.empty());
         CHECK(!test.empty());
@@ -71,16 +71,16 @@ TEST_CASE("Methods test")
 
     SUBCASE("Testing at()")
     {
-        String test("geburtstag",20);
+        String test("schwimmen");
         
 
-        CHECK(test.at(4) == 'r');
+        CHECK(test.at(4) == 'i');
        
     }
 
     SUBCASE("Testing front()")
     {
-        String test("geburtstag",20);
+        String test("gelesen");
         
 
         CHECK(test.front() == 'g');
@@ -89,7 +89,7 @@ TEST_CASE("Methods test")
 
     SUBCASE("Testing back")
     {
-        String test("geburtstag",20);
+        String test("sonntag");
        
         CHECK(test.back() == 'g');
              
@@ -99,29 +99,29 @@ TEST_CASE("Methods test")
     {
         SUBCASE("capacity < size + secondSize")
         {
-            String test("geburtstag",11), addTest("tragen",20);
+            String test("hund"), addTest("geburtstag");
             test.append(addTest);
-            CHECK(test.size() == 16);
-            CHECK(test.capacity() == 48);
-            CHECK(strcmp(test.c_str(),"geburtstag tragen") == 0);
+            CHECK(test.size() == 14);
+            CHECK(test.capacity() == 42);
+            CHECK(strcmp(test.c_str(),"hundgeburtstag") == 0);
         }
 
         SUBCASE("capacity > size + secondSize")
         {   
-            String test("geburtstag",20), addTest("tragen",15);
+            String test("geburtstag"), addTest("hund");
             test.append(addTest);
-            CHECK(test.size() == 10);
-            CHECK(test.capacity() == 20);
-            CHECK(strcmp(test.c_str(),"geburtstag tragen") == 0);
+            CHECK(test.size() == 14);
+            CHECK(test.capacity() == 30);
+            CHECK(strcmp(test.c_str(),"geburtstaghund") == 0);
         }
     }
 
     SUBCASE("Testing shrink_to_fit()")
     {
-        String test("geburtstag",20);
+        String test("rot");
         test.shrink_to_fit();
 
-        CHECK(test.capacity() == 11);
+        CHECK(test.capacity() == 4);
     }
 
 }
@@ -130,20 +130,20 @@ TEST_CASE("Operators test")
 {
     SUBCASE("Operator =")
     {
-        String test("geburtstag",20), addTest("tragen",15);
+        String test("katze"), addTest("hund");
         test = addTest;
 
-        CHECK(test.size() == 6);
-        CHECK(test.capacity() == 15);
+        CHECK(test.size() == 4);
+        CHECK(test.capacity() == 12);
     }
 
     SUBCASE("Operator +")
     {
-        String test("geburstag",20),addTest("tragen",15);
+        String test("sonntag"),addTest("hund");
         test = test + addTest;
 
-        CHECK(test.size() == 16);
-        CHECK(test.capacity() == 30);
+        CHECK(test.size() == 11);
+        CHECK(test.capacity() == 21);
 
     }
 }
