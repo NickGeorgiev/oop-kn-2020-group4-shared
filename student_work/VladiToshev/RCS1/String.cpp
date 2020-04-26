@@ -76,7 +76,7 @@ bool String::empty() const
 }
 const char String::at(const int &pos) const
 {
-    if (0 >= pos || pos > _size)
+    if (0 > pos || pos > _size)
     {
         std::cout << std::endl
                   << "Invalid position";
@@ -87,7 +87,7 @@ const char String::at(const int &pos) const
 }
 char &String::at(const int &pos)
 {
-    if (0 >= pos || pos > _size)
+    if (0 > pos || pos > _size)
     {
         std::cout << std::endl
                   << "Invalid position, last position reurned";
