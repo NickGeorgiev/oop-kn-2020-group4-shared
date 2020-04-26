@@ -3,7 +3,6 @@
 #ifndef _STRING_hh
 #define _STRING_hh
 
-
 class String
 {
 private:
@@ -43,7 +42,7 @@ public:
     const char back() const;
     char &back();
     void append(const String &);
-    char *c_str() const;
+    const char *c_str() const;
     void shrink_to_fit();
     void resize(const size_t &);
     void resize(const size_t &, const char &);
@@ -54,6 +53,6 @@ public:
     String &operator+=(const String &);
     char &operator[](const int &);
     const char &operator[](const int &) const;
-    operator bool() const;
+    explicit operator bool() const;
 };
 #endif

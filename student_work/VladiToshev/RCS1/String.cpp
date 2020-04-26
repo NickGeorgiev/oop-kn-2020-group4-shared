@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <assert.h>
 #include "String.h"
 
 // additional functions to avoid repeating the same lines of code
@@ -31,7 +32,7 @@ String::String(const String &other) : _capacity{other._capacity}, _size{other._s
 {
     strcpy(this->string, other.string);
 }
-String::String(const char *other_string) : string{new char[strlen(other_string)]}, _size{strlen(other_string)}, _capacity{strlen(other_string) * 2}
+String::String(const char *other_string) : string{new char[strlen(other_string) * 2]}, _size{strlen(other_string)}, _capacity{strlen(other_string) * 2}
 {
     strcpy(this->string, other_string);
 }
@@ -76,23 +77,13 @@ bool String::empty() const
 }
 const char String::at(const int &pos) const
 {
-    if (0 > pos || pos > _size)
-    {
-        std::cout << std::endl
-                  << "Invalid position";
-        return '\0';
-    }
+    assert(pos < _size);
 
     return string[pos];
 }
 char &String::at(const int &pos)
 {
-    if (0 > pos || pos > _size)
-    {
-        std::cout << std::endl
-                  << "Invalid position, last position reurned";
-        return string[_size - 1];
-    }
+    assert(pos < _size);
 
     return string[pos];
 }
@@ -114,16 +105,17 @@ char &String::back()
 }
 void String::append(const String &newString)
 {
-    while (this->_size + newString._size >= _capacity)
-    {
-        resize_String();
-    }
+    resize(_size + newString._size + 1);
 
     this->_size += newString._size;
     strcat(this->string, newString.string);
 }
-char *String::c_str() const
+const char *String::c_str() const
 {
+    if (empty() == 1)
+    {
+        return nullptr;
+    }
     char *result = new char[this->_size + 1];
     strcpy(result, string);
     return result;
@@ -150,7 +142,6 @@ void String::resize(const size_t &n)
     }
     String new_String(this->string, n);
     swapString(new_String);
-    new_String.~String();
 }
 void String::resize(const size_t &n, const char &character)
 {
@@ -171,18 +162,16 @@ String &String::operator=(const String &other)
 
 String &String::operator+=(const String &other)
 {
-    while (this->_size + other._size >= _capacity)
-    {
-        resize_String();
-    }
-    char *result = new char[this->_size + other._size];
-    result = strcat(this->string, other.string);
-    this->_size += other._size;
+    const char *temp = other.c_str();
+
+    append(temp);
+    delete[] temp;
+
     return *this;
 }
 
 String String::operator+(const String &other)
-{  
+{
     String result(*this);
     result += other;
     return result;
@@ -190,19 +179,21 @@ String String::operator+(const String &other)
 
 char &String::operator[](const int &pos)
 {
+    assert(pos < _size);
 
     return string[pos];
 }
 
 const char &String::operator[](const int &pos) const
 {
+    assert(pos < _size);
 
     return string[pos];
 }
 
 String::operator bool() const
 {
-    return !(_size == 0);
+    return _size != 0;
 }
 
 //Input, output operators
@@ -214,22 +205,22 @@ std::ostream &operator<<(std::ostream &out, const String &object)
     }
     else
     {
-        out << "String: " << object.string;
+        out << object.string;
     }
-    out << "  Size: " << object._size;
-    out << "  Capacity: " << object._capacity;
+    out << " " << object._size;
+    out << " " << object._capacity;
     return out;
 }
 std::istream &operator>>(std::istream &in, String &object)
 {
-    in >> object._capacity;
+    char container[255];
+    in >> container;
+
+    object._size = strlen(container);
+    object._capacity = object._size + 1;
+    delete[] object.string;
     object.string = new char[object._capacity];
-    in >> object.string;
-    object._size = strlen(object.string);
-    object.string[object._size] = '\0';
+    strcpy(object.string, container);
+
     return in;
 }
-/*int main()
-{
-
-}*/

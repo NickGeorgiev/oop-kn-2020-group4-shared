@@ -46,6 +46,12 @@ LList<T>::~LList()
 }
 
 template <class T>
+const size_t LList<T>::getSize() const
+{
+    return size;
+}
+
+template <class T>
 LList<T> &LList<T>::operator=(const LList &other)
 {
     if (this != &other)
@@ -130,16 +136,34 @@ T LList<T>::popStart()
 template <class T>
 void LList<T>::reverse()
 {
-    if (start == nullptr || start == end)
+
+    if (start == end || start == nullptr)
     {
         return;
     }
 
-    LList<T> tempList;
-    tempList = *this;
-    this->destroyList();
-    while (tempList.start != nullptr && tempList.end != nullptr)
+    end = start;
+
+    Node<T> *firstNode = nullptr;
+    Node<T> *currentNode = start;
+    Node<T> *nextNode = currentNode->next;
+
+
+    while (currentNode != nullptr)
     {
-        this->toStart(tempList.popStart());
+        currentNode->next = firstNode; //In this way we move all previous Nodes after the current one, thus reversing the first N elements, where N depends on the number of iterations of the cycle
+        firstNode = currentNode; //The first element becomes the current one, aka the latest one we have reached yet.
+
+        if (nextNode) //If there is a next element, we change the value of the current one and the next one
+        {
+            currentNode = nextNode;
+            nextNode = nextNode->next;
+        }
+        else
+        {
+            currentNode = nullptr; //If there is no next element, then we end the cycle
+        }
     }
+
+    start = firstNode; //Start becomes current first node, aka the previous end
 }

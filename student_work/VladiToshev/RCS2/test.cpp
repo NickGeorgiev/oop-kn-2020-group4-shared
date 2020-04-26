@@ -13,26 +13,37 @@ TEST_CASE("String")
         SUBCASE("Default construction")
         {
             String test_String;
+
+            CHECK(test_String.c_str() == nullptr);
             CHECK(test_String.size() == 0);
             CHECK(test_String.capacity() == 1);
         }
         SUBCASE("Construction with capacity")
         {
             String test_String(20);
+
+            CHECK(test_String.c_str() == nullptr);
             CHECK(test_String.size() == 0);
             CHECK(test_String.capacity() == 20);
         }
         SUBCASE("Construction with a given string")
         {
             String test_String("Test");
+
             CHECK(test_String.size() == 4);
             CHECK(test_String.capacity() == 8);
+            const char *charArray = test_String.c_str();
+            CHECK(strcmp("Test", charArray) == 0);
+            delete[] charArray;
         }
         SUBCASE("Construction with given string and capacity")
         {
             String test_String("TestStr", 20);
             CHECK(test_String.size() == 7);
             CHECK(test_String.capacity() == 20);
+            const char *charArray = test_String.c_str();
+            CHECK(strcmp("TestStr", charArray) == 0);
+            delete[] charArray;
         }
         SUBCASE("Copy constructor")
         {
@@ -41,16 +52,11 @@ TEST_CASE("String")
 
             CHECK(copy.size() == 4);
             CHECK(copy.capacity() == 15);
+
+            const char *charArray = test_String.c_str();
+            CHECK(strcmp("Test", charArray) == 0);
+            delete[] charArray;
         }
-    }
-
-    SUBCASE("Destructor")
-    {
-        String test_String("Test", 15);
-        test_String.~String();
-
-        CHECK(test_String.size() == 0);
-        CHECK(test_String.capacity() == 0);
     }
 
     SUBCASE("Operators")
@@ -71,7 +77,10 @@ TEST_CASE("String")
             String second_String("String", 10);
             second_String = second_String + first_String;
             CHECK(second_String.size() == 10);
-            CHECK(second_String.capacity() == 20);
+            CHECK(second_String.capacity() == 11);
+            const char *charArray = second_String.c_str();
+            CHECK(strcmp(charArray, "StringTest") == 0);
+            delete[] charArray;
         }
         SUBCASE("Operator +=")
         {
@@ -80,6 +89,9 @@ TEST_CASE("String")
             first_String += second_String;
             CHECK(first_String.size() == 9);
             CHECK(first_String.capacity() == 10);
+            const char *charArray = first_String.c_str();
+            CHECK(strcmp(charArray, "TestValue") == 0);
+            delete[] charArray;
         }
         SUBCASE("Operator []")
         {
@@ -143,18 +155,22 @@ TEST_CASE("String")
             test_String.back() = 'K';
             CHECK(test_String.back() == 'K');
         }
-       SUBCASE("Append")
+        SUBCASE("Append")
         {
             String first_String("Test", 10);
             String second_String("StringTest", 15);
             first_String.append(second_String);
             CHECK(first_String.size() == 14);
-            CHECK(first_String.capacity() == 20);
+            CHECK(first_String.capacity() == 15);
+
+            const char *charArray = first_String.c_str();
+            CHECK(strcmp("TestStringTest", charArray) == 0);
+            delete[] charArray;
         }
         SUBCASE("Char Array")
         {
             String test_String("TestStr", 10);
-            char *charArray = new char[test_String.size() + 1];
+            const char *charArray = new char[test_String.size() + 1];
             charArray = test_String.c_str();
             CHECK(strcmp(charArray, "TestStr") == 0);
             delete[] charArray;
@@ -183,6 +199,7 @@ TEST_CASE("String")
             test_String.resize(15, 'Q');
             CHECK(test_String.size() == 14);
             CHECK(test_String.capacity() == 15);
+            CHECK(test_String.back() == 'Q');
         }
     }
 }
@@ -197,3 +214,4 @@ int main()
 {
     run_Tests();
 }
+
