@@ -8,13 +8,13 @@ private:
     size_t numberOfStudents;
     Teacher* teachers;
     size_t numberOfTeachers;
-    Course* courses;
-    size_t numberOfCourses;
+    Subject* subjects;
+    size_t numberOfSubjects;
     
 public:
     University(const Student* const, const size_t&,
                const Teacher* const, const size_t&,
-               const Course* const, const size_t&);
+               const Subject* const, const size_t&);
     University(const University&);
     ~University();
     University& operator=(const University&);
@@ -25,20 +25,20 @@ public:
     const size_t& getNumberOfStudents() const;
     const Teacher* const getTeachers() const;
     const size_t& getNumberOfTeachers() const;
-    const Course* const getCourses() const;
-    const size_t& getNumberOfCourses() const;
+    const Subject* const getSubjects() const;
+    const size_t& getNumberOfSubjects() const;
 
     void addStudent(const Student&);
-    void addStudent(const Student&, const size_t&);
+    void addStudent(const Student&, Subject&);
 
     friend std::ostream& operator << (std::ostream&, const University&);
 private:
     bool contains(const Student&) const;
-    bool contains(const Course&) const;
+    bool contains(const Subject&) const;
     void copy(const University&);
     void copy(const Student* const, const size_t&,
               const Teacher* const, const size_t&,
-              const Course* const, const size_t&);
+              const Subject* const, const size_t&);
 
     template <class T>
     void copyList(T*,size_t&, const T* const, const size_t&);

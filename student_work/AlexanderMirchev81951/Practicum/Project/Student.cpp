@@ -1,14 +1,18 @@
 #include <iostream>
 #include <cstring>
+#include "User.h"
 #include "Student.h"
+
 
 // Constructors
 
-Student::Student(const char* const firstName, const char* const lastName, const int facNum, 
-                const int* const grades, const size_t numberOfGrades) { 
-    copy(firstName, lastName, facNum, grades, numberOfGrades);
+Student::Student(const char* const firstName, const char* const lastName, const char* const password, 
+        const int facNum, const int course, const int* const grades, const size_t numberOfGrades): 
+        User(firstName, lastName, password) { 
+    copy(facNum, course, grades, numberOfGrades);
+    delete[] grades;
 }
-Student::Student(): Student("", "", 0, nullptr, 0) {}
+Student::Student(): Student("", ""," ", 0, 0, nullptr, 0) {}
 Student::Student(const Student& other) {
     copy(other);
 }
@@ -36,15 +40,16 @@ Student& Student::operator = (Student&& other) {
 }
 
 std::ostream& operator << (std::ostream &out, const Student& student) {
-    out << student.firstName << " " << student.lastName << " " << student.facNumber<< " " << student.numberOfGrades<< " ";
+    out << (const User&)student << " " << student.facNumber << " "<< student.course << " " << student.numberOfGrades<< " ";
     for (size_t i = 0; i < student.numberOfGrades; i++) {
         out << student.grades[i] << " ";
     }
     out << "\n";    
     return out;
 }
+
 std::istream& operator >> (std::istream &in, Student& student) {
-    in >> student.firstName >> student.lastName >> student.facNumber >> student.numberOfGrades;
+    in >>(User&) student >> student.facNumber >> student.course >> student.numberOfGrades;
     for (size_t i = 0; i < student.numberOfGrades; i++)
     {
         in >> student.grades[i];
@@ -72,13 +77,10 @@ double Student::averageGrade() const {
 
 // Private methods
 
-void Student::copy(const char* const firstName, const char* const lastName, const int facNum, const int* const grades, 
-        const size_t& numberOfGrades) {
-    this->firstName = new char[strlen(firstName) + 1];
-    strcpy(this->firstName, firstName),
-    this->lastName = new char[strlen(lastName) + 1];
-    strcpy(this->lastName, lastName);
+void Student::copy(const int facNum, const int course, 
+    const int* const grades, const size_t& numberOfGrades) {
     this->facNumber = facNum;
+    this->course = course;
     this->grades = new int[numberOfGrades];
     this->numberOfGrades = numberOfGrades;
     for (size_t i = 0; i < numberOfGrades; i++)
@@ -88,16 +90,11 @@ void Student::copy(const char* const firstName, const char* const lastName, cons
 }
 
 void Student::copy(const Student& other) {
-    copy(other.firstName, other.lastName, other.facNumber, other.grades, other.numberOfGrades);
+    User::operator=((const User&) other);
+    copy(other.facNumber, other.course, other.grades, other.numberOfGrades);
 }
 
 void Student::freeMemory() {
-    if(firstName != nullptr) {
-        delete[] firstName;
-    }
-    if(lastName != nullptr) {
-        delete[] lastName;
-    }
     if(grades != nullptr) {
         delete[] grades;
     }

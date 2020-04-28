@@ -1,11 +1,11 @@
-#ifndef _COURSE_HH
-#define _COURSE_HH
-class Course {
+#ifndef _SUBJECT_HH
+#define _SUBJECT_HH
+class Subject {
 
     private:
 
     // Class members
-
+    
     Teacher teacher;
     Student* students;
     size_t numberOfStudents;
@@ -14,18 +14,18 @@ class Course {
 
     // Constructors
 
-    Course();
-    Course(const Teacher&, const Student* const, const size_t&);
-    Course(const Course&);
-    ~Course();
-    Course& operator= (const Course&);
-    Course(Course&&);
-    Course& operator= (Course&&);
+    Subject();
+    Subject(const Teacher&, const Student* const, const size_t&);
+    Subject(const Subject&);
+    ~Subject();
+    Subject& operator= (const Subject&);
+    Subject(Subject&&);
+    Subject& operator= (Subject&&);
 
     // Operators
 
-    friend std::ostream& operator << (std::ostream&, const Course&);
-    friend std::istream& operator >> (std::istream&, Course&);
+    friend std::ostream& operator << (std::ostream&, const Subject&);
+    friend std::istream& operator >> (std::istream&, Subject&);
 
     // Public Methods
 
@@ -38,7 +38,7 @@ class Course {
 
     // Private methods
     void copy(const Teacher&, const Student* const, const size_t&);
-    void copy(const Course&);
+    void copy(const Subject&);
     void freeMemory();
 };
 #endif

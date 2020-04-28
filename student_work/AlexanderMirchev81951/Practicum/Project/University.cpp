@@ -1,12 +1,12 @@
 #include <cassert>
 #include "Student.h"
 #include "Teacher.h"
-#include "Course.h"
+#include "Subject.h"
 #include "University.h"
 University::University(const Student* const students, const size_t& numberOfStudents,
                const Teacher* const teachers, const size_t& numberOfTeachers,
-               const Course* const courses, const size_t& numberOfCourses) {
-                   copy(students, numberOfStudents, teachers, numberOfTeachers, courses, numberOfCourses);
+               const Subject* const subjects, const size_t& numberOfSubjects) {
+                   copy(students, numberOfStudents, teachers, numberOfTeachers, subjects, numberOfSubjects);
                }
 University::University(const University& other) { }
 University::~University() {
@@ -40,11 +40,11 @@ const Teacher* const University::getTeachers() const {
 const size_t& University::getNumberOfTeachers() const {
     return this->numberOfTeachers;
 }
-const Course* const University::getCourses() const {
-    return this->courses;
+const Subject* const University::getSubjects() const {
+    return this->subjects;
 }
-const size_t& University::getNumberOfCourses() const {
-    return this->numberOfCourses;
+const size_t& University::getNumberOfSubjects() const {
+    return this->numberOfSubjects;
 }
 
 void University::addStudent(const Student& student) {
@@ -59,9 +59,9 @@ void University::addStudent(const Student& student) {
     delete[] this-> students;
     this->students = newStudents;
 }
-void University::addStudent(const Student& student, const size_t& courseIndex) {
-    assert(contains(student) && (courseIndex < numberOfCourses));
-    courses[courseIndex].addStudent(student);
+void University::addStudent(const Student& student, Subject& subject) {
+    assert(contains(student));
+    subject.addStudent(student);
 }
 
 // could use optimisation. just for testing
@@ -76,9 +76,9 @@ std::ostream& operator << (std::ostream &out, const University& university) {
         out << university.teachers[i];
     }
 
-    std::cout << "Course\n";
-    for (size_t i = 0; i < university.numberOfCourses; i++) {
-        out << university.courses[i];
+    std::cout << "Subject\n";
+    for (size_t i = 0; i < university.numberOfSubjects; i++) {
+        out << university.subjects[i];
     }
 }
 bool University::contains(const Student& student) const {
@@ -90,13 +90,13 @@ bool University::contains(const Student& student) const {
     return false;    
 }
 
-// Couldn't think of a proper way to implement == in course without extra members
-bool University::contains(const Course& course) const {
+// Couldn't think of a proper way to implement == in subject without extra members
+bool University::contains(const Subject& subject) const {
     return true;
 }
 void University::copy(const Student* const students, const size_t& numberOfStudents,
                const Teacher* const teachers, const size_t& numberOfTeachers,
-               const Course* const courses, const size_t& numberOfCourses) {
+               const Subject* const subjects, const size_t& numberOfSubjects) {
         this->students = new Student[numberOfStudents];
         for (size_t i = 0; i < numberOfStudents; i++) {
             this->students[i] = students[i];
@@ -107,15 +107,15 @@ void University::copy(const Student* const students, const size_t& numberOfStude
             this->teachers[i] = teachers[i];
         }
         this->numberOfTeachers = numberOfTeachers;
-        this->courses = new Course[numberOfCourses];
-        for (size_t i = 0; i < numberOfCourses; i++) {
-            this->courses[i] = courses[i];
+        this->subjects = new Subject[numberOfSubjects];
+        for (size_t i = 0; i < numberOfSubjects; i++) {
+            this->subjects[i] = subjects[i];
         }
-        this->numberOfCourses = numberOfCourses;
+        this->numberOfSubjects = numberOfSubjects;
 }
 void University::copy(const University& other) {
     copy(other.students, other.numberOfStudents, other.teachers, 
-    other.numberOfTeachers, other.courses, other.numberOfCourses);
+    other.numberOfTeachers, other.subjects, other.numberOfSubjects);
 }
 void University::freeMemory() {
     if(this->students != nullptr) {
@@ -124,7 +124,7 @@ void University::freeMemory() {
     if(this->teachers != nullptr) {
         delete[] this->teachers;
     }
-    if(this->courses != nullptr) {
-        delete[] this->courses;
+    if(this->subjects != nullptr) {
+        delete[] this->subjects;
     }   
 }

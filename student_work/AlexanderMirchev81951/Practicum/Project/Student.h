@@ -2,21 +2,21 @@
 #define _STUDENT_HH
 
 #include <iostream>
+#include "User.h"
 
-class Student {
+class Student: public User {
 
     private:
 
-    char* firstName;
-    char* lastName;
     int facNumber;
+    int course;
     int* grades;
     size_t numberOfGrades;
 
     public:
     Student();
-    Student(const char* const firstName, const char* const lastName, const int facNum, 
-            const int* const grades, const size_t numberOfGrades);
+    Student(const char* const firstName, const char* const lastName, const char* const password, 
+        const int facNum, const int course, const int* const grades, const size_t numberOfGrades);
     Student(const Student&);
     ~Student();
     Student& operator = (const Student&);
@@ -29,14 +29,18 @@ class Student {
 
     // Public methods
 
+    bool isInCourse(const int course) const {
+        return course == this->course;
+    }
+
     double averageGrade() const;
 
     private:
 
     // Private Methods
 
-    void copy(const char* const firstName, const char* const lastName, const int facNum, 
-            const int* const grades, const size_t& numberOfGrades);
+    void copy(const int facNum, const int course, 
+        const int* const grades, const size_t& numberOfGrades);
     void copy(const Student&);
     void freeMemory();
 };
