@@ -12,9 +12,16 @@ TEST_CASE("LList")
     {
         SUBCASE("Increase size")
         {
+            //Given:
             LList<int> testList;
+
+            //Then:
             CHECK(testList.getSize() == 0);
+
+            //When:
             testList.toStart(1);
+
+            //Then:
             CHECK(testList.getSize() == 1);
         }
     }
@@ -23,24 +30,32 @@ TEST_CASE("LList")
     {
         SUBCASE("One element")
         {
+            //Given:
             LList<int> testList;
-            CHECK(testList.getSize() == 0);
-            testList.toStart(1);
-            CHECK(testList.getSize() == 1);
 
+            //Then:
+            CHECK(testList.getSize() == 0);
+
+            //When:
+            testList.toStart(1);
+
+            //Then:
+            CHECK(testList.getSize() == 1);
             CHECK(testList.popStart() == 1);
             CHECK(testList.getSize() == 0);
         }
 
         SUBCASE("Multiple elements")
         {
+            //Given:
             LList<int> testList;
-            CHECK(testList.getSize() == 0);
-            testList.toStart(1);
-            CHECK(testList.getSize() == 1);
-            testList.toEnd(2);
-            CHECK(testList.getSize() == 2);
 
+            //When:
+            testList.toStart(1);
+            testList.toEnd(2);
+
+            //Then:
+            CHECK(testList.getSize() == 2);
             CHECK(testList.popStart() == 1);
             CHECK(testList.getSize() == 1);
             CHECK(testList.popStart() == 2);
@@ -52,22 +67,30 @@ TEST_CASE("LList")
     {
         SUBCASE("One element")
         {
+            //Given:
             LList<int> testList;
-            testList.toStart(1);
 
+            //When:
+            testList.toStart(1);
             testList.reverse();
+
+            //Then:
             CHECK(testList.popStart() == 1);
         }
 
         SUBCASE("Multiple elements")
         {
+            //Given:
             LList<int> testList;
+
+            //When:
             testList.toStart(1);
             testList.toEnd(2);
             testList.toEnd(3);
 
             testList.reverse();
 
+            //Then:
             CHECK(testList.popStart() == 3);
             CHECK(testList.popStart() == 2);
             CHECK(testList.popStart() == 1);
@@ -75,7 +98,10 @@ TEST_CASE("LList")
 
         SUBCASE("Multiple elements with insert")
         {
+            //Given:
             LList<int> testList;
+
+            //When:
             testList.toStart(1);
             testList.toEnd(2);
             testList.toEnd(3);
@@ -85,6 +111,7 @@ TEST_CASE("LList")
 
             testList.reverse();
 
+            //Then:
             CHECK(testList.popStart() == 5);
             CHECK(testList.popStart() == 4);
             CHECK(testList.popStart() == 3);
@@ -105,4 +132,3 @@ int main()
 {
     run_Tests();
 }
-

@@ -148,11 +148,10 @@ void LList<T>::reverse()
     Node<T> *currentNode = start;
     Node<T> *nextNode = currentNode->next;
 
-
     while (currentNode != nullptr)
     {
         currentNode->next = firstNode; //In this way we move all previous Nodes after the current one, thus reversing the first N elements, where N depends on the number of iterations of the cycle
-        firstNode = currentNode; //The first element becomes the current one, aka the latest one we have reached yet.
+        firstNode = currentNode;       //The first element becomes the current one, aka the latest one we have reached yet.
 
         if (nextNode) //If there is a next element, we change the value of the current one and the next one
         {
